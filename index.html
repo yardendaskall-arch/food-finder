@@ -193,6 +193,7 @@
         <button class="btn" id="btnSignin"></button>
         <button class="btn white" id="btnSignup"></button>
       </div>
+      <button class="btn pink" id="btnResend" type="button" hidden></button>
       <p id="authMsg" class="notice"></p>
       <p id="privacy" class="notice"></p>
     </div>
@@ -237,7 +238,12 @@ const LANGS = {
     loading:"Cooking up ideas...", now:"It's now", empty:"Type or tap at least one food!",
     err:"Oops, that didn't work: ", retry:"Try again in a moment.", budget:"Under $10", easy:"How to get it",
     email:"Email", password:"Password (6+ characters)", signin:"Let's go!", signup:"New here? Join!", signout:"Bye!",
-    confirm:"Account created! If it asks you to confirm your email, check your inbox, then sign in.",
+    confirm:"Account created! We emailed you a link. Tap it, then come back here and sign in. Only the newest email works.",
+    unconfirmed:"Your email isn't confirmed yet. Old email links stop working when a new one is sent, so tap “Send email again” and use only the newest email.",
+    resend:"Send email again", resent:"Sent! Open the newest email and tap its link.",
+    exists:"That email already has an account. Just sign in.", wait:"Please wait a minute before trying again.",
+    mailLimit:"Too many emails were sent just now. Please try again in about an hour.",
+    badLogin:"Wrong email or password.", fill:"Type your email and a password first.",
     privacy:"By signing in you agree that your email, the foods you enter and the AI's replies are stored for safety and abuse monitoring.",
     banned:"Your account is taking a break (suspended).", rate:"Whoa, slow down! Try again in a bit." },
   he: { dir:"rtl", locale:"he-IL",
@@ -246,7 +252,12 @@ const LANGS = {
     loading:"מבשל רעיונות...", now:"עכשיו", empty:"כתבו או לחצו על לפחות מאכל אחד!",
     err:"אופס, זה לא עבד: ", retry:"נסו שוב עוד רגע.", budget:"מתחת ל-10$", easy:"איך משיגים",
     email:"אימייל", password:"סיסמה (6 תווים לפחות)", signin:"יאללה!", signup:"חדשים? הצטרפו!", signout:"ביי!",
-    confirm:"החשבון נוצר! אם מתבקשים לאשר אימייל, בדקו את תיבת הדואר ואז התחברו.",
+    confirm:"החשבון נוצר! שלחנו לך מייל עם קישור. לחצו עליו, חזרו לכאן והתחברו. רק המייל החדש ביותר עובד.",
+    unconfirmed:"האימייל עדיין לא אושר. קישורים ישנים מפסיקים לעבוד כששולחים מייל חדש, אז לחצו על ״שלח מייל שוב״ והשתמשו רק במייל החדש ביותר.",
+    resend:"שלח מייל שוב", resent:"נשלח! פתחו את המייל החדש ביותר ולחצו על הקישור.",
+    exists:"לאימייל הזה כבר יש חשבון. פשוט התחברו.", wait:"המתינו דקה ונסו שוב.",
+    mailLimit:"נשלחו יותר מדי מיילים כרגע. נסו שוב בעוד כשעה.",
+    badLogin:"אימייל או סיסמה שגויים.", fill:"כתבו קודם אימייל וסיסמה.",
     privacy:"בהתחברות אתם מסכימים שהאימייל, המאכלים שתזינו ותשובות ה-AI יישמרו לצורכי אבטחה וזיהוי שימוש לרעה.",
     banned:"החשבון שלכם בהפסקה (הושעה).", rate:"וואו, לאט לאט! נסו שוב עוד רגע." },
   de: { dir:"ltr", locale:"de-DE",
@@ -255,7 +266,12 @@ const LANGS = {
     loading:"Ich koche Ideen...", now:"Jetzt", empty:"Schreib oder tippe mindestens ein Essen!",
     err:"Ups, das hat nicht geklappt: ", retry:"Versuch es gleich nochmal.", budget:"Unter 10 $", easy:"So bekommst du es",
     email:"E-Mail", password:"Passwort (mind. 6 Zeichen)", signin:"Los geht's!", signup:"Neu hier? Mitmachen!", signout:"Tschüss!",
-    confirm:"Konto erstellt! Falls du deine E-Mail bestätigen sollst, prüfe dein Postfach und melde dich dann an.",
+    confirm:"Konto erstellt! Wir haben dir einen Link gemailt. Tippe darauf, komm dann zurück und melde dich an. Nur die neueste E-Mail funktioniert.",
+    unconfirmed:"Deine E-Mail ist noch nicht bestätigt. Alte Links funktionieren nicht mehr, sobald eine neue E-Mail gesendet wird. Tippe auf „E-Mail erneut senden“ und nutze nur die neueste.",
+    resend:"E-Mail erneut senden", resent:"Gesendet! Öffne die neueste E-Mail und tippe auf den Link.",
+    exists:"Für diese E-Mail gibt es schon ein Konto. Melde dich einfach an.", wait:"Bitte warte eine Minute und versuch es dann nochmal.",
+    mailLimit:"Gerade wurden zu viele E-Mails gesendet. Versuch es in etwa einer Stunde nochmal.",
+    badLogin:"E-Mail oder Passwort ist falsch.", fill:"Gib zuerst deine E-Mail und ein Passwort ein.",
     privacy:"Mit der Anmeldung stimmst du zu, dass deine E-Mail, die eingegebenen Gerichte und die KI-Antworten zur Sicherheit und Missbrauchskontrolle gespeichert werden.",
     banned:"Dein Konto macht gerade Pause (gesperrt).", rate:"Hoppla, nicht so schnell! Versuch es gleich nochmal." },
   es: { dir:"ltr", locale:"es-ES",
@@ -264,7 +280,12 @@ const LANGS = {
     loading:"Cocinando ideas...", now:"Ahora", empty:"¡Escribe o toca al menos una comida!",
     err:"Ups, eso no funcionó: ", retry:"Inténtalo de nuevo en un momento.", budget:"Menos de 10 $", easy:"Cómo conseguirlo",
     email:"Correo electrónico", password:"Contraseña (mín. 6 caracteres)", signin:"¡Vamos!", signup:"¿Eres nuevo? ¡Únete!", signout:"¡Adiós!",
-    confirm:"¡Cuenta creada! Si te pide confirmar el correo, revisa tu bandeja y luego inicia sesión.",
+    confirm:"¡Cuenta creada! Te enviamos un enlace por correo. Tócalo, vuelve aquí e inicia sesión. Solo funciona el correo más nuevo.",
+    unconfirmed:"Tu correo aún no está confirmado. Los enlaces viejos dejan de funcionar cuando se envía uno nuevo, así que toca «Enviar correo otra vez» y usa solo el más nuevo.",
+    resend:"Enviar correo otra vez", resent:"¡Enviado! Abre el correo más nuevo y toca su enlace.",
+    exists:"Ese correo ya tiene una cuenta. Solo inicia sesión.", wait:"Espera un minuto e inténtalo de nuevo.",
+    mailLimit:"Se enviaron demasiados correos ahora mismo. Inténtalo en aproximadamente una hora.",
+    badLogin:"Correo o contraseña incorrectos.", fill:"Primero escribe tu correo y una contraseña.",
     privacy:"Al iniciar sesión aceptas que tu correo, las comidas que escribas y las respuestas de la IA se guarden por seguridad y control de abusos.",
     banned:"Tu cuenta está en pausa (suspendida).", rate:"¡Uy, más despacio! Inténtalo en un ratito." },
   ja: { dir:"ltr", locale:"ja-JP",
@@ -273,7 +294,12 @@ const LANGS = {
     loading:"アイデアを料理中...", now:"いま", empty:"食べ物を1つ以上入力するか、タップしてね！",
     err:"うまくいかなかったよ：", retry:"少ししてからもう一度試してね。", budget:"10ドル以下", easy:"入手方法",
     email:"メールアドレス", password:"パスワード（6文字以上）", signin:"スタート！", signup:"はじめての人はこちら！", signout:"バイバイ！",
-    confirm:"アカウントを作成しました。メール認証を求められた場合は受信箱を確認してからログインしてください。",
+    confirm:"アカウントを作成しました！リンク付きのメールを送ったよ。リンクをタップして、ここに戻ってログインしてね。いちばん新しいメールだけ使えます。",
+    unconfirmed:"メールがまだ確認されていません。新しいメールを送ると古いリンクは使えなくなります。「メールをもう一度送る」をタップして、いちばん新しいメールだけ使ってね。",
+    resend:"メールをもう一度送る", resent:"送ったよ！いちばん新しいメールを開いてリンクをタップしてね。",
+    exists:"このメールアドレスにはすでにアカウントがあります。ログインしてね。", wait:"1分待ってからもう一度試してね。",
+    mailLimit:"いまメールが送られすぎています。1時間ほどしてからもう一度試してね。",
+    badLogin:"メールアドレスかパスワードがちがいます。", fill:"先にメールアドレスとパスワードを入力してね。",
     privacy:"ログインすると、メールアドレス、入力した食べ物、AIの返答が、安全確保と不正利用の監視のために保存されることに同意したものとみなされます。",
     banned:"アカウントはおやすみ中です（停止）。", rate:"ちょっと待ってね！少ししてからもう一度。" },
   zh: { dir:"ltr", locale:"zh-CN",
@@ -282,7 +308,12 @@ const LANGS = {
     loading:"正在想好吃的点子...", now:"现在", empty:"请输入或点选至少一种食物！",
     err:"哎呀，没成功：", retry:"请稍后再试。", budget:"低于10美元", easy:"获取方式",
     email:"邮箱", password:"密码（至少6位）", signin:"出发！", signup:"新朋友？加入吧！", signout:"拜拜！",
-    confirm:"账户已创建！如果需要确认邮箱，请查看收件箱后再登录。",
+    confirm:"账户已创建！我们给你发了一封带链接的邮件。点开链接，然后回到这里登录。只有最新的一封邮件有效。",
+    unconfirmed:"你的邮箱还没有确认。发送新邮件后，旧链接就会失效，所以请点“再发一次邮件”，并且只使用最新的那封。",
+    resend:"再发一次邮件", resent:"已发送！请打开最新的邮件并点击链接。",
+    exists:"这个邮箱已经有账户了，直接登录就行。", wait:"请等一分钟再试。",
+    mailLimit:"刚才发送的邮件太多了，请大约一小时后再试。",
+    badLogin:"邮箱或密码不对。", fill:"请先输入邮箱和密码。",
     privacy:"登录即表示你同意：你的邮箱、输入的食物以及 AI 的回复将被保存，用于安全和防滥用监控。",
     banned:"你的账户正在休息（已被封禁）。", rate:"哇，慢一点！过一会儿再试。" }
 };
@@ -361,6 +392,7 @@ function applyLang() {
   $("password").placeholder = L.password;
   $("btnSignin").textContent = L.signin;
   $("btnSignup").textContent = L.signup;
+  $("btnResend").textContent = L.resend;
   $("outBtn").textContent = L.signout;
   $("privacy").textContent = L.privacy;
   $("bannedMsg").textContent = L.banned;
@@ -396,17 +428,73 @@ function authMessage(text, isError) {
   m.className = "notice " + (isError ? "error" : "ok");
 }
 
+function friendlyAuthError(error) {
+  const L = LANGS[lang];
+  const code = error.code || "";
+  const msg = String(error.message || "");
+  if (code === "email_not_confirmed" || /not confirmed/i.test(msg)) { $("btnResend").hidden = false; return L.unconfirmed; }
+  if (code === "over_email_send_rate_limit" || error.status === 429) return /after \d+ seconds/i.test(msg) ? L.wait : L.mailLimit;
+  if (code === "invalid_credentials" || /invalid login/i.test(msg)) return L.badLogin;
+  return msg;
+}
+
+// Supabase sends one email per minute, and every new email kills the older link.
+// So after sending we lock Join / Resend for a minute (no more "tap Join again" pile-ups).
+let authLockTimer = null;
+function lockAuth(seconds) {
+  clearInterval(authLockTimer);
+  let left = seconds;
+  const paint = () => {
+    const locked = left > 0;
+    $("btnSignup").disabled = locked;
+    $("btnResend").disabled = locked;
+    $("btnResend").textContent = LANGS[lang].resend + (locked ? " (" + left + ")" : "");
+  };
+  paint();
+  authLockTimer = setInterval(() => { left--; paint(); if (left <= 0) clearInterval(authLockTimer); }, 1000);
+}
+
 $("btnSignin").addEventListener("click", async () => {
   authMessage("");
-  const { error } = await sb.auth.signInWithPassword({ email: $("email").value.trim(), password: $("password").value });
-  if (error) authMessage(error.message, true);
+  const email = $("email").value.trim(), password = $("password").value;
+  if (!email || !password) { authMessage(LANGS[lang].fill, true); return; }
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) authMessage(friendlyAuthError(error), true);
 });
 $("btnSignup").addEventListener("click", async () => {
+  const L = LANGS[lang];
   authMessage("");
-  const { data, error } = await sb.auth.signUp({ email: $("email").value.trim(), password: $("password").value });
-  if (error) { authMessage(error.message, true); return; }
-  if (!data.session) authMessage(LANGS[lang].confirm, false);
+  const email = $("email").value.trim(), password = $("password").value;
+  if (!email || !password) { authMessage(L.fill, true); return; }
+  const { data, error } = await sb.auth.signUp({ email, password });
+  if (error) { authMessage(friendlyAuthError(error), true); return; }
+  // Supabase hides "already registered" by returning a user with no identities
+  if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) { authMessage(L.exists, true); return; }
+  if (!data.session) {
+    authMessage(L.confirm, false);
+    $("btnResend").hidden = false;
+    lockAuth(60);
+  }
 });
+$("btnResend").addEventListener("click", async () => {
+  const L = LANGS[lang];
+  const email = $("email").value.trim();
+  if (!email) { authMessage(L.fill, true); return; }
+  authMessage("");
+  const { error } = await sb.auth.resend({ type: "signup", email });
+  if (error) { authMessage(friendlyAuthError(error), true); return; }
+  authMessage(L.resent, false);
+  lockAuth(60);
+});
+
+// Back from an old or already-used email link: Supabase redirects with "#error=...".
+(function oldLink() {
+  const h = new URLSearchParams(location.hash.replace(/^#/, ""));
+  if (!h.get("error_code")) return;
+  history.replaceState(null, "", location.pathname + location.search);
+  $("btnResend").hidden = false;
+  authMessage(LANGS[lang].unconfirmed, true);
+})();
 $("outBtn").addEventListener("click", () => sb.auth.signOut());
 $("adminBtn").addEventListener("click", () => { renderAdmin(); show("adminView"); });
 
