@@ -232,6 +232,14 @@
   html[data-mode="mom"] th { background:#f6ede3; }
   html[data-mode="mom"] th, html[data-mode="mom"] td { border-bottom-color:var(--line); }
   html[data-mode="mom"] .badge { border-width:1px; }
+  .chip.sel { background:var(--lemon) !important; }
+  html[data-mode="mom"] .chip.sel { background:var(--accent) !important; color:#fff; border-color:var(--accent); }
+  .dietbox { margin-bottom:16px; }
+  .dietbox label.field { font-size:1.1rem; margin-bottom:8px; }
+  html[data-mode="mom"] .dietbox label.field { font-size:1.1rem; }
+  .dietbox input { margin-bottom:8px; }
+  .dietbox .chips { margin-bottom:4px; }
+  .dietbox .notice { margin-top:4px; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -309,6 +317,12 @@
       <textarea id="foods" maxlength="300"></textarea>
       <p class="chips-label" id="t-chips"></p>
       <div class="chips" id="chips"></div>
+      <div class="dietbox">
+        <label class="field" for="diet" id="t-diet"></label>
+        <input id="diet" maxlength="200" autocomplete="off">
+        <div class="chips" id="dietChips"></div>
+        <p class="notice" id="t-dietnote"></p>
+      </div>
       <div class="effort-box" id="effortBox" hidden>
         <p class="chips-label" id="t-effort"></p>
         <div class="seg" id="effortSeg" role="group"></div>
@@ -417,12 +431,12 @@ const LANGS = {
 
 // extra UI words, added to every language
 const EXTRA = {
-  en:{ mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
-  he:{ mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
-  de:{ mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
-  es:{ mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
-  ja:{ mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
-  zh:{ mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
+  en:{ dietLabel:"Allergies or special diet?", dietPh:"vegan, celiac, allergic to cheese...", dietNote:"The AI can make mistakes. Always check labels and ingredients, especially for allergies.", mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
+  he:{ dietLabel:"אלרגיות או תזונה מיוחדת?", dietPh:"טבעוני, צליאק, אלרגיה לגבינה...", dietNote:"ה-AI יכול לטעות. תמיד בדקו תוויות ורכיבים, במיוחד באלרגיות.", mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
+  de:{ dietLabel:"Allergien oder besondere Ernährung?", dietPh:"vegan, Zöliakie, Käseallergie...", dietNote:"Die KI kann Fehler machen. Prüfe immer Etiketten und Zutaten, besonders bei Allergien.", mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
+  es:{ dietLabel:"¿Alergias o dieta especial?", dietPh:"vegano, celíaco, alergia al queso...", dietNote:"La IA puede equivocarse. Revisa siempre etiquetas e ingredientes, sobre todo con alergias.", mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
+  ja:{ dietLabel:"アレルギーや食事制限は？", dietPh:"ヴィーガン、セリアック、チーズアレルギー…", dietNote:"AIは間違えることがあります。特にアレルギーのときは、必ずラベルと原材料を確認してください。", mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
+  zh:{ dietLabel:"有过敏或特殊饮食吗？", dietPh:"纯素、乳糜泻、奶酪过敏...", dietNote:"AI 可能会出错。尤其是过敏时，请务必查看标签和成分。", mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
 };
 for (const k in EXTRA) Object.assign(LANGS[k], EXTRA[k]);
 
@@ -477,6 +491,19 @@ const MOM = {
     rate:"你一直很忙！先休息一下，稍后再试。",
     signin:"登录", signup:"创建账户", signout:"退出登录", banned:"此账户已被停用。" }
 };
+
+const DIET = [
+  { n:{ en:"Vegetarian", he:"צמחוני", de:"Vegetarisch", es:"Vegetariano", ja:"ベジタリアン", zh:"素食" } },
+  { n:{ en:"Vegan", he:"טבעוני", de:"Vegan", es:"Vegano", ja:"ヴィーガン", zh:"纯素" } },
+  { n:{ en:"Pescetarian", he:"פסקטריאני", de:"Pescetarisch", es:"Pescetariano", ja:"ペスカタリアン", zh:"鱼素" } },
+  { n:{ en:"Celiac (gluten-free)", he:"צליאק (ללא גלוטן)", de:"Zöliakie (glutenfrei)", es:"Celíaco (sin gluten)", ja:"セリアック（グルテンフリー）", zh:"乳糜泻（无麸质）" } },
+  { n:{ en:"Allergic to cheese", he:"אלרגיה לגבינה", de:"Käseallergie", es:"Alergia al queso", ja:"チーズアレルギー", zh:"奶酪过敏" } },
+  { n:{ en:"Dairy-free", he:"ללא מוצרי חלב", de:"Milchfrei", es:"Sin lácteos", ja:"乳製品なし", zh:"无乳制品" } },
+  { n:{ en:"Nut allergy", he:"אלרגיה לאגוזים", de:"Nussallergie", es:"Alergia a los frutos secos", ja:"ナッツアレルギー", zh:"坚果过敏" } },
+  { n:{ en:"Egg allergy", he:"אלרגיה לביצים", de:"Eiallergie", es:"Alergia al huevo", ja:"卵アレルギー", zh:"鸡蛋过敏" } },
+  { n:{ en:"Kosher", he:"כשר", de:"Koscher", es:"Kosher", ja:"コーシャ", zh:"洁食" } },
+  { n:{ en:"Halal", he:"חלאל", de:"Halal", es:"Halal", ja:"ハラール", zh:"清真" } }
+];
 
 const CHIPS_MOM = [
   { e:"🍕", n:{ en:"Pizza", he:"פיצה", de:"Pizza", es:"Pizza", ja:"ピザ", zh:"披萨" } },
@@ -589,6 +616,10 @@ function applyLang() {
   $("mascotFace").textContent = mode === "mom" ? "💛" : "🧑‍🍳";
   $("zzz").textContent = mode === "mom" ? "🌙" : "😴";
   $("logoEmoji").textContent = mode === "mom" ? "🍲" : "🍕";
+  $("t-diet").textContent = L.dietLabel;
+  $("diet").placeholder = L.dietPh;
+  $("t-dietnote").textContent = L.dietNote;
+  paintDietChips();
   paintEffort();
   paintWho();
 
@@ -603,6 +634,28 @@ function applyLang() {
   });
   tick();
 }
+const dietList = () => $("diet").value.split(/[,،、]\s*/).map(x => x.trim()).filter(Boolean);
+function paintDietChips() {
+  const L = S(), have = dietList().map(x => x.toLowerCase());
+  const box = $("dietChips");
+  box.replaceChildren();
+  DIET.forEach(d => {
+    const name = d.n[lang];
+    const b = el("button", "chip" + (have.includes(name.toLowerCase()) ? " sel" : ""), name);
+    b.type = "button";
+    b.setAttribute("aria-pressed", String(have.includes(name.toLowerCase())));
+    b.onclick = () => {
+      const cur = dietList(), i = cur.findIndex(x => x.toLowerCase() === name.toLowerCase());
+      if (i >= 0) cur.splice(i, 1); else cur.push(name);
+      $("diet").value = cur.join(", ");
+      saveDiet(); paintDietChips();
+    };
+    box.append(b);
+  });
+}
+function saveDiet() { try { localStorage.setItem("ff_diet", $("diet").value); } catch (e) {} }
+try { $("diet").value = localStorage.getItem("ff_diet") || ""; } catch (e) {}
+$("diet").addEventListener("input", () => { saveDiet(); paintDietChips(); });
 function paintEffort() {
   const L = S(), seg = $("effortSeg");
   seg.replaceChildren();
@@ -893,7 +946,7 @@ async function go() {
     const res = await fetch(SUPABASE_URL + "/functions/v1/food-ai", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token, "apikey": SUPABASE_ANON_KEY },
-      body: JSON.stringify({ foods, lang, local_time: timeStr, mode, effort })
+      body: JSON.stringify({ foods, lang, local_time: timeStr, mode, effort, diet: $("diet").value.trim().slice(0, 200) })
     });
     const data = await res.json().catch(() => ({}));
     if (seq !== reqSeq) return; // the person switched mode meanwhile
@@ -975,7 +1028,9 @@ async function loadRequests(body) {
       tr.append(el("td", null, fmt(r.created_at)));
       tr.append(el("td", null, r.mode === "mom" ? "💛 mom" : "🧒 kid"));
       tr.append(el("td", null, r.email));
-      tr.append(el("td", null, r.foods));
+      const ft = el("td", null, r.foods);
+      if (r.diet) ft.append(el("br"), el("span", "badge", "diet: " + r.diet));
+      tr.append(ft);
       const resp = el("td");
       const names = ((r.response && r.response.suggestions) || []).map(s => s.name).join(", ") || "(empty)";
       const d = el("details");
