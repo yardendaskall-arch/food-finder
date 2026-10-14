@@ -3,10 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#4a2bd4" id="themeColor">
+<script>try{var m=new URLSearchParams(location.search).get("mode")||localStorage.getItem("ff_mode");document.documentElement.dataset.mode=(m==="mom")?"mom":"kid";}catch(e){document.documentElement.dataset.mode="kid";}</script>
 <title>Food Finder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;700;800&family=Rubik:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;700;800&family=Rubik:wght@500;700&family=Fraunces:opsz,wght@9..144,500;9..144,600&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
     --ink:#20174a; --violet:#4a2bd4; --lemon:#ffd93d; --bubblegum:#ff7bc5; --mint:#5df2b0; --sky:#6ed0ff; --orange:#ff8a3d;
@@ -151,6 +153,85 @@
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation:none !important; transition:none !important; }
   }
+
+  /* ===== mode switcher, effort picker, social buttons, result extras ===== */
+  .modebar { display:flex; justify-content:center; margin:0 0 14px; }
+  .seg { display:inline-flex; flex-wrap:wrap; gap:4px; background:#fff; border:3px solid var(--ink); border-radius:999px; padding:4px; box-shadow:0 4px 0 var(--ink); }
+  .seg button { font-family:var(--display); font-weight:400; font-size:1.05rem; color:var(--ink); background:transparent; border:0; border-radius:999px; padding:6px 16px; }
+  .seg button[aria-pressed="true"] { background:var(--lemon); }
+  .effort-box { margin-bottom:16px; }
+  .oauth { display:flex; align-items:center; justify-content:center; gap:10px; width:100%; margin-bottom:10px; font-size:1.05rem; }
+  .oauth svg { width:20px; height:20px; flex:none; }
+  .btn.oauth.google { background:#fff; }
+  .btn.oauth.apple { background:#000; color:#fff; }
+  .or { display:flex; align-items:center; gap:10px; color:var(--soft); font-size:.9rem; margin:2px 0 12px; }
+  .or::before, .or::after { content:""; flex:1; height:2px; background:#e6e0ff; }
+  .meta { display:inline-block; background:rgba(255,255,255,.65); border-radius:999px; padding:2px 10px; font-size:.85rem; margin:0 0 4px; }
+  .love { background:rgba(255,255,255,.6); border-radius:14px; padding:10px 12px; }
+  .love b { display:block; font-family:var(--display); font-weight:400; }
+  @keyframes rise { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+
+  /* ===== MOMS theme: calm, warm, grown-up ===== */
+  html[data-mode="mom"] {
+    --ink:#3a2a25; --soft:#7d6b62; --accent:#c4533a; --accent-d:#a0402b; --line:#e8d9ca;
+    --display:"Fraunces","Frank Ruhl Libre","Noto Serif JP","Noto Serif SC",Georgia,serif;
+    --body:"DM Sans","Noto Sans JP","Noto Sans SC",system-ui,sans-serif;
+  }
+  html[data-mode="mom"] body { background-color:#fbf4ec; background-size:auto; background-attachment:fixed; font-weight:500;
+    background-image:radial-gradient(circle at 0 0,#f8ddd0 0,transparent 42%),radial-gradient(circle at 100% 30%,#e3ebdb 0,transparent 38%); }
+  html[data-mode="mom"] :focus-visible { outline-color:var(--accent); }
+  html[data-mode="mom"] #decor span { opacity:.13; filter:none; }
+  html[data-mode="mom"] .logo { font-weight:600; color:var(--accent); -webkit-text-stroke:0; text-shadow:none; transform:none; letter-spacing:-.01em; }
+  html[data-mode="mom"] .langpick select { border:1.5px solid var(--line); box-shadow:none; font-weight:500; }
+  html[data-mode="mom"] .userbar { border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="mom"] .bubble { border:1.5px solid var(--line); box-shadow:none; border-radius:18px; font-weight:500; font-size:1.02rem; }
+  html[data-mode="mom"] .bubble::before { border-inline-start:1.5px solid var(--line); border-bottom:1.5px solid var(--line); }
+  html[data-mode="mom"] .mascot-face { font-size:2.6rem; }
+  html[data-mode="mom"] .card { border:1px solid var(--line); border-radius:24px; box-shadow:0 14px 34px rgba(120,70,40,.09); }
+  html[data-mode="mom"] .card.inner { background:#fff9f3; box-shadow:none; }
+  html[data-mode="mom"] .clock { background:#f7e6b5; border:0; font-weight:600; }
+  html[data-mode="mom"] label.field { font-weight:600; }
+  html[data-mode="mom"] h2, html[data-mode="mom"] h3 { font-weight:600; }
+  html[data-mode="mom"] input, html[data-mode="mom"] textarea, html[data-mode="mom"] select.plain { background:#fffaf4; border:1.5px solid var(--line); border-radius:14px; font-weight:500; }
+  html[data-mode="mom"] .card.inner input, html[data-mode="mom"] .card.inner textarea, html[data-mode="mom"] .card.inner select.plain { background:#fff; }
+  html[data-mode="mom"] button { font-family:var(--body); font-weight:600; }
+  html[data-mode="mom"] .btn { background:var(--accent); color:#fff; border:0; border-radius:999px; box-shadow:0 3px 0 var(--accent-d); }
+  html[data-mode="mom"] .btn:active { transform:translateY(2px); box-shadow:0 1px 0 var(--accent-d); }
+  html[data-mode="mom"] .btn.big { font-size:1.2rem; padding:15px; border:0; border-radius:999px; box-shadow:0 4px 0 var(--accent-d); }
+  html[data-mode="mom"] .btn.big:active { transform:translateY(3px); box-shadow:0 1px 0 var(--accent-d); }
+  html[data-mode="mom"] .btn.white { background:#fff; color:var(--ink); border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="mom"] .btn.pink { background:#5f7f64; box-shadow:0 3px 0 #48634c; }
+  html[data-mode="mom"] .btn.danger { background:#b3382c; box-shadow:0 3px 0 #8a2a21; }
+  html[data-mode="mom"] .btn.on { background:#f7e6b5; color:var(--ink); }
+  html[data-mode="mom"] .btn.small { padding:6px 14px; font-size:.9rem; border-width:0; box-shadow:none; }
+  html[data-mode="mom"] .btn.small.white { border:1.5px solid var(--line); }
+  html[data-mode="mom"] .btn.oauth.apple { background:#000; color:#fff; box-shadow:none; }
+  html[data-mode="mom"] .btn.oauth.google { background:#fff; color:var(--ink); border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="mom"] .or::before, html[data-mode="mom"] .or::after { background:var(--line); }
+  html[data-mode="mom"] .chip { font-family:var(--body); font-weight:500; border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="mom"] .chip:nth-child(4n+1) { background:#fbe3d9; }
+  html[data-mode="mom"] .chip:nth-child(4n+2) { background:#e4ecdc; }
+  html[data-mode="mom"] .chip:nth-child(4n+3) { background:#f9ecc4; }
+  html[data-mode="mom"] .chip:nth-child(4n+4) { background:#fff; }
+  html[data-mode="mom"] .seg { border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="mom"] .seg button { font-family:var(--body); font-weight:600; font-size:.95rem; }
+  html[data-mode="mom"] .seg button[aria-pressed="true"] { background:var(--accent); color:#fff; }
+  html[data-mode="mom"] .tray { background:transparent; padding:0; gap:14px; border-radius:0; grid-template-columns:1fr; }
+  html[data-mode="mom"] .bento, html[data-mode="mom"] .bento:nth-child(n) { background:#fff; border:1px solid var(--line); border-inline-start:6px solid var(--accent);
+    border-radius:20px; box-shadow:0 10px 26px rgba(120,70,40,.08); animation:rise .5s ease both; }
+  html[data-mode="mom"] .bento:nth-child(2) { border-inline-start-color:#7a9a7e; animation-delay:.1s; }
+  html[data-mode="mom"] .bento:nth-child(3) { border-inline-start-color:#e0b44c; animation-delay:.2s; }
+  html[data-mode="mom"] .bento .big-emoji { font-size:2.4rem; }
+  html[data-mode="mom"] .bento h3 { font-size:1.4rem; padding-inline-end:76px; }
+  html[data-mode="mom"] .bento .how b { font-family:var(--body); font-weight:600; font-size:.95rem; color:var(--accent); }
+  html[data-mode="mom"] .price { background:#f7e6b5; border:0; transform:none; box-shadow:none; top:14px; inset-inline-end:14px; font-family:var(--body); font-weight:600; font-size:.95rem; }
+  html[data-mode="mom"] .meta { background:#eef2e8; font-weight:600; }
+  html[data-mode="mom"] .love { background:#fdeee6; font-style:italic; font-family:var(--display); }
+  html[data-mode="mom"] .love b { font-family:var(--body); font-style:normal; font-weight:600; font-size:.9rem; color:var(--accent); }
+  html[data-mode="mom"] .thinking { background:#fdeee6; color:var(--ink); font-family:var(--display); font-weight:600; font-size:1.2rem; }
+  html[data-mode="mom"] th { background:#f6ede3; }
+  html[data-mode="mom"] th, html[data-mode="mom"] td { border-bottom-color:var(--line); }
+  html[data-mode="mom"] .badge { border-width:1px; }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -159,7 +240,7 @@
 
 <div class="wrap" id="wrap">
   <header>
-    <h1 class="logo"><span class="logo-emoji" aria-hidden="true">🍕</span><span id="t-title"></span></h1>
+    <h1 class="logo"><span class="logo-emoji" id="logoEmoji" aria-hidden="true">🍕</span><span id="t-title"></span></h1>
     <label class="langpick">
       <span class="sr">Language</span>
       <select id="lang">
@@ -172,6 +253,13 @@
       </select>
     </label>
   </header>
+
+  <div class="modebar">
+    <div class="seg" id="modebar" role="group">
+      <button type="button" id="modeKid" aria-pressed="true"></button>
+      <button type="button" id="modeMom" aria-pressed="false"></button>
+    </div>
+  </div>
 
   <div class="userbar" id="userbar" hidden>
     <span id="who"></span>
@@ -187,6 +275,11 @@
   <!-- sign in -->
   <section id="authView" hidden>
     <div class="card">
+      <div id="oauth" hidden>
+        <button class="btn oauth google" id="btnGoogle" type="button" hidden><svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span id="t-google"></span></button>
+        <button class="btn oauth apple" id="btnApple" type="button" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#fff" d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span id="t-apple"></span></button>
+        <div class="or"><span id="t-or"></span></div>
+      </div>
       <input id="email" type="email" autocomplete="email">
       <input id="password" type="password" autocomplete="current-password">
       <div class="row">
@@ -202,7 +295,7 @@
   <!-- banned -->
   <section id="bannedView" hidden>
     <div class="card sleepy">
-      <span class="zzz" aria-hidden="true">😴</span>
+      <span class="zzz" id="zzz" aria-hidden="true">😴</span>
       <h2 id="bannedMsg"></h2>
       <p id="bannedReason" class="muted"></p>
     </div>
@@ -216,6 +309,10 @@
       <textarea id="foods" maxlength="300"></textarea>
       <p class="chips-label" id="t-chips"></p>
       <div class="chips" id="chips"></div>
+      <div class="effort-box" id="effortBox" hidden>
+        <p class="chips-label" id="t-effort"></p>
+        <div class="seg" id="effortSeg" role="group"></div>
+      </div>
       <button class="btn big" id="go"></button>
     </div>
     <div id="result" aria-live="polite"></div>
@@ -318,6 +415,80 @@ const LANGS = {
     banned:"你的账户正在休息（已被封禁）。", rate:"哇，慢一点！过一会儿再试。" }
 };
 
+// extra UI words, added to every language
+const EXTRA = {
+  en:{ mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
+  he:{ mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
+  de:{ mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
+  es:{ mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
+  ja:{ mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
+  zh:{ mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
+};
+for (const k in EXTRA) Object.assign(LANGS[k], EXTRA[k]);
+
+// MOMS version: these words replace the kid ones when Moms mode is on
+const MOM = {
+  en:{ title:"Made With Love",
+    sub:"You don't have to love cooking. Tell me what your kids love, and I'll find quick, easy meals that say it for you.",
+    label:"What do your kids love to eat?", ph:"pizza, nuggets, mac & cheese...", chips:"Tap to add:", go:"Find me dinner ideas",
+    loading:"Thinking of something easy and lovely...", effortLabel:"How much time do you have?", e10:"10 min", e20:"20 min", e40:"40 min",
+    easy:"How to make it", love:"Say it with food", min:"min", budget:"Under $10",
+    empty:"Add at least one thing your kids love.", err:"Something went wrong: ", retry:"Please try again in a moment.",
+    rate:"You've been busy! Take a short breather and try again soon.",
+    signin:"Sign in", signup:"Create account", signout:"Sign out", banned:"This account has been suspended." },
+  he:{ title:"נעשה באהבה",
+    sub:"את לא חייבת לאהוב לבשל. ספרי לי מה הילדים שלך אוהבים, ואמצא ארוחות קלות ומהירות שיגידו את זה במקומך.",
+    label:"מה הילדים שלך אוהבים לאכול?", ph:"פיצה, נאגטס, מקרוני וגבינה...", chips:"לחצי כדי להוסיף:", go:"מצאי לי רעיונות לארוחה",
+    loading:"חושבת על משהו קל ונעים...", effortLabel:"כמה זמן יש לך?", e10:"10 דק׳", e20:"20 דק׳", e40:"40 דק׳",
+    easy:"איך מכינים", love:"אומרים את זה עם אוכל", min:"דק׳", budget:"מתחת ל-10$",
+    empty:"הוסיפי לפחות דבר אחד שהילדים אוהבים.", err:"משהו השתבש: ", retry:"נסי שוב בעוד רגע.",
+    rate:"היית עסוקה! קחי נשימה קצרה ונסי שוב בקרוב.",
+    signin:"התחברות", signup:"יצירת חשבון", signout:"התנתקות", banned:"החשבון הזה הושעה." },
+  de:{ title:"Mit Liebe gekocht",
+    sub:"Du musst das Kochen nicht lieben. Sag mir, was deine Kinder gern essen, und ich finde schnelle, einfache Gerichte, die es für dich sagen.",
+    label:"Was essen deine Kinder am liebsten?", ph:"Pizza, Nuggets, Käsemakkaroni...", chips:"Tippe zum Hinzufügen:", go:"Gerichte für heute finden",
+    loading:"Ich denke an etwas Einfaches und Liebevolles...", effortLabel:"Wie viel Zeit hast du?", e10:"10 Min.", e20:"20 Min.", e40:"40 Min.",
+    easy:"So wird's gemacht", love:"Sag es mit Essen", min:"Min.", budget:"Unter 10 $",
+    empty:"Gib mindestens etwas ein, das deine Kinder lieben.", err:"Etwas ist schiefgelaufen: ", retry:"Versuch es gleich nochmal.",
+    rate:"Du warst fleißig! Gönn dir eine kurze Pause und versuch es gleich nochmal.",
+    signin:"Anmelden", signup:"Konto erstellen", signout:"Abmelden", banned:"Dieses Konto wurde gesperrt." },
+  es:{ title:"Hecho con amor",
+    sub:"No tiene que encantarte cocinar. Dime qué les gusta a tus hijos y encontraré comidas rápidas y fáciles que lo digan por ti.",
+    label:"¿Qué les encanta comer a tus hijos?", ph:"pizza, nuggets, macarrones con queso...", chips:"Toca para añadir:", go:"Buscar ideas para cenar",
+    loading:"Pensando en algo fácil y cariñoso...", effortLabel:"¿Cuánto tiempo tienes?", e10:"10 min", e20:"20 min", e40:"40 min",
+    easy:"Cómo prepararlo", love:"Dilo con comida", min:"min", budget:"Menos de 10 $",
+    empty:"Añade al menos algo que les guste a tus hijos.", err:"Algo salió mal: ", retry:"Inténtalo de nuevo en un momento.",
+    rate:"¡Has estado ocupada! Toma un respiro y vuelve a intentarlo pronto.",
+    signin:"Iniciar sesión", signup:"Crear cuenta", signout:"Cerrar sesión", banned:"Esta cuenta ha sido suspendida." },
+  ja:{ title:"愛情ごはん",
+    sub:"料理が好きじゃなくても大丈夫。お子さんの好きな食べ物を教えてください。気持ちが伝わる、簡単で手早いごはんを見つけます。",
+    label:"お子さんは何を食べるのが好きですか？", ph:"ピザ、ナゲット、マカロニチーズ…", chips:"タップして追加：", go:"今日のごはんを探す",
+    loading:"簡単で心のこもったメニューを考え中…", effortLabel:"どのくらい時間がありますか？", e10:"10分", e20:"20分", e40:"40分",
+    easy:"作り方", love:"ごはんで伝えよう", min:"分", budget:"10ドル以下",
+    empty:"お子さんの好きなものを1つ以上入力してください。", err:"うまくいきませんでした：", retry:"少ししてからもう一度お試しください。",
+    rate:"お疲れさまです！少し休んでから、また試してください。",
+    signin:"ログイン", signup:"アカウント作成", signout:"ログアウト", banned:"このアカウントは停止されています。" },
+  zh:{ title:"用爱做饭",
+    sub:"你不必爱上做饭。告诉我孩子们爱吃什么，我来找快手又简单、能替你表达心意的饭菜。",
+    label:"孩子们爱吃什么？", ph:"披萨、鸡块、奶酪通心粉...", chips:"点一点就能添加：", go:"帮我想想吃什么",
+    loading:"正在想简单又温暖的主意...", effortLabel:"你有多少时间？", e10:"10分钟", e20:"20分钟", e40:"40分钟",
+    easy:"做法", love:"用美食表达爱", min:"分钟", budget:"低于10美元",
+    empty:"请至少输入一样孩子爱吃的东西。", err:"出错了：", retry:"请稍后再试。",
+    rate:"你一直很忙！先休息一下，稍后再试。",
+    signin:"登录", signup:"创建账户", signout:"退出登录", banned:"此账户已被停用。" }
+};
+
+const CHIPS_MOM = [
+  { e:"🍕", n:{ en:"Pizza", he:"פיצה", de:"Pizza", es:"Pizza", ja:"ピザ", zh:"披萨" } },
+  { e:"🍗", n:{ en:"Chicken nuggets", he:"נאגטס", de:"Chicken Nuggets", es:"Nuggets de pollo", ja:"チキンナゲット", zh:"鸡块" } },
+  { e:"🧀", n:{ en:"Mac & cheese", he:"מקרוני וגבינה", de:"Käsemakkaroni", es:"Macarrones con queso", ja:"マカロニチーズ", zh:"奶酪通心粉" } },
+  { e:"🥞", n:{ en:"Pancakes", he:"פנקייק", de:"Pfannkuchen", es:"Panqueques", ja:"パンケーキ", zh:"松饼" } },
+  { e:"🍝", n:{ en:"Spaghetti", he:"ספגטי", de:"Spaghetti", es:"Espaguetis", ja:"スパゲッティ", zh:"意大利面" } },
+  { e:"🌭", n:{ en:"Hot dogs", he:"נקניקיות", de:"Würstchen", es:"Salchichas", ja:"ソーセージ", zh:"热狗" } },
+  { e:"🍟", n:{ en:"Fries", he:"צ'יפס", de:"Pommes", es:"Papas fritas", ja:"ポテト", zh:"薯条" } },
+  { e:"🍦", n:{ en:"Ice cream", he:"גלידה", de:"Eis", es:"Helado", ja:"アイス", zh:"冰淇淋" } }
+];
+
 const CHIPS = [
   { e:"🍕", n:{ en:"Pizza", he:"פיצה", de:"Pizza", es:"Pizza", ja:"ピザ", zh:"披萨" } },
   { e:"🍣", n:{ en:"Sushi", he:"סושי", de:"Sushi", es:"Sushi", ja:"寿司", zh:"寿司" } },
@@ -333,7 +504,12 @@ const $ = id => document.getElementById(id);
 let lang = localStorage.getItem("ff_lang") || "en";
 if (!LANGS[lang]) lang = "en";
 let isAdmin = false;
-let currentUserId = null;
+let currentUserId = null, currentEmail = null;
+let mode = document.documentElement.dataset.mode === "mom" ? "mom" : "kid";
+let effort = localStorage.getItem("ff_effort");
+if (!["e10", "e20", "e40"].includes(effort)) effort = "e20";
+let reqSeq = 0; // bumps whenever the mode changes, so a late answer from the other mode is dropped
+function S() { return Object.assign({}, LANGS[lang], mode === "mom" ? MOM[lang] : null); }
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // Always build DOM with textContent: foods typed by users are untrusted.
@@ -347,18 +523,21 @@ function el(tag, cls, text) {
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 /* ---------- background doodles ---------- */
-(function doodles() {
-  const items = ["🍕","🍓","🍪","🌮","🍩","🥨","🍉","🍔","🧁","🍟","🥑","🍦"];
+function drawDecor() {
+  const kid = ["🍕","🍓","🍪","🌮","🍩","🥨","🍉","🍔","🧁","🍟","🥑","🍦"];
+  const mom = ["🌿","🍋","🍅","🥕","🧄","🌽","🍞","🫒","🌿","🍋","🥕","🍅"];
+  const items = mode === "mom" ? mom : kid;
   const spots = [[4,8],[88,6],[10,34],[92,30],[3,58],[90,55],[8,82],[86,84],[48,3],[50,94],[24,70],[72,18]];
   const box = $("decor");
+  box.replaceChildren();
   spots.forEach(([x, y], i) => {
-    const s = el("span", null, items[i % items.length]);
-    s.style.left = x + "%"; s.style.top = y + "%";
-    s.style.fontSize = (34 + (i % 4) * 10) + "px";
-    s.style.transform = "rotate(" + ((i * 37) % 50 - 25) + "deg)";
-    box.append(s);
+    const sp = el("span", null, items[i % items.length]);
+    sp.style.left = x + "%"; sp.style.top = y + "%";
+    sp.style.fontSize = (34 + (i % 4) * 10) + "px";
+    sp.style.transform = "rotate(" + ((i * 37) % 50 - 25) + "deg)";
+    box.append(sp);
   });
-})();
+}
 
 /* ---------- views ---------- */
 const VIEWS = ["authView", "bannedView", "appView", "adminView"];
@@ -378,7 +557,7 @@ function addChip(name, node) {
 }
 
 function applyLang() {
-  const L = LANGS[lang];
+  const L = S();
   document.documentElement.lang = lang;
   document.documentElement.dir = L.dir;
   $("lang").value = lang;
@@ -397,10 +576,25 @@ function applyLang() {
   $("privacy").textContent = L.privacy;
   $("bannedMsg").textContent = L.banned;
   document.title = L.title;
+  $("modeKid").textContent = "🧒 " + L.mKid;
+  $("modeMom").textContent = "💛 " + L.mMom;
+  $("modeKid").setAttribute("aria-pressed", String(mode === "kid"));
+  $("modeMom").setAttribute("aria-pressed", String(mode === "mom"));
+  $("modebar").setAttribute("aria-label", L.modeAria);
+  $("t-google").textContent = L.google;
+  $("t-apple").textContent = L.apple;
+  $("t-or").textContent = L.or;
+  $("effortBox").hidden = mode !== "mom";
+  $("t-effort").textContent = L.effortLabel || "";
+  $("mascotFace").textContent = mode === "mom" ? "💛" : "🧑‍🍳";
+  $("zzz").textContent = mode === "mom" ? "🌙" : "😴";
+  $("logoEmoji").textContent = mode === "mom" ? "🍲" : "🍕";
+  paintEffort();
+  paintWho();
 
   const chips = $("chips");
   chips.replaceChildren();
-  CHIPS.forEach(c => {
+  (mode === "mom" ? CHIPS_MOM : CHIPS).forEach(c => {
     const name = c.n[lang];
     const b = el("button", "chip", c.e + " " + name);
     b.type = "button";
@@ -409,8 +603,39 @@ function applyLang() {
   });
   tick();
 }
+function paintEffort() {
+  const L = S(), seg = $("effortSeg");
+  seg.replaceChildren();
+  ["e10", "e20", "e40"].forEach(k => {
+    const b = el("button", null, "⏱ " + (L[k] || k));
+    b.type = "button";
+    b.setAttribute("aria-pressed", String(effort === k));
+    b.onclick = () => { effort = k; localStorage.setItem("ff_effort", k); paintEffort(); };
+    seg.append(b);
+  });
+}
+function paintWho() {
+  $("who").textContent = currentEmail ? (mode === "mom" ? "💛 " : "😎 ") + currentEmail : "";
+}
+function setMode(m) {
+  if (m === mode) return;
+  mode = m;
+  reqSeq++;
+  try { localStorage.setItem("ff_mode", mode); } catch (e) {}
+  $("result").replaceChildren();
+  applyMode();
+}
+function applyMode() {
+  document.documentElement.dataset.mode = mode;
+  $("themeColor").setAttribute("content", mode === "mom" ? "#fbf4ec" : "#4a2bd4");
+  try { localStorage.setItem("ff_mode", mode); } catch (e) {}
+  drawDecor();
+  applyLang();
+}
+$("modeKid").addEventListener("click", () => setMode("kid"));
+$("modeMom").addEventListener("click", () => setMode("mom"));
 function tick() {
-  const L = LANGS[lang];
+  const L = S();
   $("clock").textContent = "🕒 " + L.now + ": " +
     new Date().toLocaleString(L.locale, { weekday:"long", hour:"2-digit", minute:"2-digit" });
 }
@@ -429,7 +654,7 @@ function authMessage(text, isError) {
 }
 
 function friendlyAuthError(error) {
-  const L = LANGS[lang];
+  const L = S();
   const code = error.code || "";
   const msg = String(error.message || "");
   if (code === "email_not_confirmed" || /not confirmed/i.test(msg)) { $("btnResend").hidden = false; return L.unconfirmed; }
@@ -448,7 +673,7 @@ function lockAuth(seconds) {
     const locked = left > 0;
     $("btnSignup").disabled = locked;
     $("btnResend").disabled = locked;
-    $("btnResend").textContent = LANGS[lang].resend + (locked ? " (" + left + ")" : "");
+    $("btnResend").textContent = S().resend + (locked ? " (" + left + ")" : "");
   };
   paint();
   authLockTimer = setInterval(() => { left--; paint(); if (left <= 0) clearInterval(authLockTimer); }, 1000);
@@ -457,12 +682,12 @@ function lockAuth(seconds) {
 $("btnSignin").addEventListener("click", async () => {
   authMessage("");
   const email = $("email").value.trim(), password = $("password").value;
-  if (!email || !password) { authMessage(LANGS[lang].fill, true); return; }
+  if (!email || !password) { authMessage(S().fill, true); return; }
   const { error } = await sb.auth.signInWithPassword({ email, password });
   if (error) authMessage(friendlyAuthError(error), true);
 });
 $("btnSignup").addEventListener("click", async () => {
-  const L = LANGS[lang];
+  const L = S();
   authMessage("");
   const email = $("email").value.trim(), password = $("password").value;
   if (!email || !password) { authMessage(L.fill, true); return; }
@@ -477,7 +702,7 @@ $("btnSignup").addEventListener("click", async () => {
   }
 });
 $("btnResend").addEventListener("click", async () => {
-  const L = LANGS[lang];
+  const L = S();
   const email = $("email").value.trim();
   if (!email) { authMessage(L.fill, true); return; }
   authMessage("");
@@ -487,19 +712,41 @@ $("btnResend").addEventListener("click", async () => {
   lockAuth(60);
 });
 
-// Back from an old or already-used email link: Supabase redirects with "#error=...".
+// Back from an old email link or a failed social sign-in: Supabase redirects with error_code in # or ?.
 (function oldLink() {
   const h = new URLSearchParams(location.hash.replace(/^#/, ""));
-  if (!h.get("error_code")) return;
-  history.replaceState(null, "", location.pathname + location.search);
-  $("btnResend").hidden = false;
-  authMessage(LANGS[lang].unconfirmed, true);
+  const q = new URLSearchParams(location.search);
+  const code = h.get("error_code") || q.get("error_code");
+  if (!code) return;
+  const desc = h.get("error_description") || q.get("error_description") || code;
+  ["error", "error_code", "error_description"].forEach(k => q.delete(k));
+  history.replaceState(null, "", location.pathname + (q.toString() ? "?" + q : ""));
+  if (code === "otp_expired") { $("btnResend").hidden = false; authMessage(S().unconfirmed, true); }
+  else authMessage(S().oauthErr + desc, true);
 })();
+
+// Google / Apple buttons only show up once you switch the provider on in Supabase.
+async function oauth(provider) {
+  authMessage("");
+  const { error } = await sb.auth.signInWithOAuth({ provider, options: { redirectTo: location.origin + location.pathname } });
+  if (error) authMessage(S().oauthErr + error.message, true);
+}
+$("btnGoogle").addEventListener("click", () => oauth("google"));
+$("btnApple").addEventListener("click", () => oauth("apple"));
+fetch(SUPABASE_URL + "/auth/v1/settings", { headers: { apikey: SUPABASE_ANON_KEY } })
+  .then(r => r.json())
+  .then(cfg => {
+    const ex = (cfg && cfg.external) || {};
+    $("btnGoogle").hidden = !ex.google;
+    $("btnApple").hidden = !ex.apple;
+    $("oauth").hidden = !(ex.google || ex.apple);
+  })
+  .catch(() => {});
 $("outBtn").addEventListener("click", () => sb.auth.signOut());
 $("adminBtn").addEventListener("click", () => { renderAdmin(); show("adminView"); });
 
 function showBanned(reason) {
-  $("bannedMsg").textContent = LANGS[lang].banned;
+  $("bannedMsg").textContent = S().banned;
   $("bannedReason").textContent = reason || "";
   show("bannedView");
 }
@@ -544,6 +791,7 @@ async function enterApp(session) {
   if (!session) {
     stopWatching();
     currentUserId = null;
+    currentEmail = null;
     isAdmin = false;
     $("userbar").hidden = true;
     $("adminBtn").hidden = true;
@@ -551,7 +799,8 @@ async function enterApp(session) {
     return;
   }
   currentUserId = session.user.id;
-  $("who").textContent = "😎 " + session.user.email;
+  currentEmail = session.user.email;
+  paintWho();
   $("userbar").hidden = false;
   const { data, error } = await sb.rpc("touch_user");
   if (error) { show("authView"); authMessage(error.message, true); return; }
@@ -566,8 +815,8 @@ async function enterApp(session) {
 /* ---------- results: the bento lunchbox ---------- */
 function confetti() {
   if (reduceMotion) return;
-  const set = ["🎉","⭐","🍕","🍓","🍪","✨","🥨","🍉"];
-  for (let i = 0; i < 22; i++) {
+  const set = mode === "mom" ? ["💛","🌿","✨","🍋"] : ["🎉","⭐","🍕","🍓","🍪","✨","🥨","🍉"];
+  for (let i = 0; i < (mode === "mom" ? 12 : 22); i++) {
     const s = el("span", "confetti", set[i % set.length]);
     s.style.left = (Math.random() * 100) + "vw";
     s.style.fontSize = (18 + Math.random() * 16) + "px";
@@ -584,10 +833,10 @@ function firstEmoji(v) {
 }
 
 function renderResult(out, parsed) {
-  const L = LANGS[lang];
+  const L = S();
   out.replaceChildren();
   if (parsed.greeting) out.append(el("div", "bubble says", parsed.greeting));
-  if (parsed.common_thread) out.append(el("div", "bubble says", "🔎 " + parsed.common_thread));
+  if (parsed.common_thread) out.append(el("div", "bubble says", (mode === "mom" ? "💛 " : "🔎 ") + parsed.common_thread));
 
   const tray = el("div", "tray");
   (parsed.suggestions || []).forEach(s => {
@@ -595,10 +844,17 @@ function renderResult(out, parsed) {
     box.append(el("span", "price", s.approx_price_usd || L.budget));
     box.append(el("span", "big-emoji", firstEmoji(s.emoji)));
     box.append(el("h3", null, s.name || ""));
+    const mins = Number(s.time_minutes);
+    if (mins > 0 && mins < 600) box.append(el("span", "meta", "⏱ " + Math.round(mins) + " " + (L.min || "min")));
     box.append(el("p", null, s.why_similar || ""));
     const how = el("p", "how");
-    how.append(el("b", null, "👩‍🍳 " + L.easy), document.createTextNode(s.how_to_get || ""));
+    how.append(el("b", null, (mode === "mom" ? "🍳 " : "👩‍🍳 ") + L.easy), document.createTextNode(s.how_to_get || ""));
     box.append(how);
+    if (s.love_touch) {
+      const love = el("p", "love");
+      love.append(el("b", null, "💌 " + (L.love || "")), document.createTextNode(s.love_touch));
+      box.append(love);
+    }
     tray.append(box);
   });
   out.append(tray);
@@ -613,7 +869,8 @@ function thinkingCard(text) {
 }
 
 async function go() {
-  const L = LANGS[lang];
+  const L = S();
+  const seq = reqSeq;
   const out = $("result");
   const foods = $("foods").value.trim().slice(0, 300);
   out.replaceChildren();
@@ -636,19 +893,21 @@ async function go() {
     const res = await fetch(SUPABASE_URL + "/functions/v1/food-ai", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token, "apikey": SUPABASE_ANON_KEY },
-      body: JSON.stringify({ foods, lang, local_time: timeStr })
+      body: JSON.stringify({ foods, lang, local_time: timeStr, mode, effort })
     });
     const data = await res.json().catch(() => ({}));
+    if (seq !== reqSeq) return; // the person switched mode meanwhile
     if (res.status === 403 && data.error === "banned") { showBanned(data.reason); return; }
     if (res.status === 401) { await sb.auth.signOut(); return; }
     if (res.status === 429) { out.replaceChildren(el("p", "bubble says error", L.rate)); return; }
     if (!res.ok) throw new Error(data.error || res.status);
     renderResult(out, data.result || {});
   } catch (e) {
+    if (seq !== reqSeq) return;
     out.replaceChildren(el("p", "bubble says error", L.err + e.message + ". " + L.retry));
   } finally {
     btn.disabled = false;
-    btn.textContent = L.go;
+    btn.textContent = S().go;
   }
 }
 $("go").addEventListener("click", go);
@@ -709,11 +968,12 @@ async function loadRequests(body) {
     const rows = data.filter(r => !q || r.email.toLowerCase().includes(q) || r.foods.toLowerCase().includes(q));
     const t = document.createElement("table");
     const head = document.createElement("tr");
-    ["When", "Email", "Foods typed", "AI response", "Source", ""].forEach(h => head.append(el("th", null, h)));
+    ["When", "Mode", "Email", "Foods typed", "AI response", "Source", ""].forEach(h => head.append(el("th", null, h)));
     t.append(head);
     rows.forEach(r => {
       const tr = document.createElement("tr");
       tr.append(el("td", null, fmt(r.created_at)));
+      tr.append(el("td", null, r.mode === "mom" ? "💛 mom" : "🧒 kid"));
       tr.append(el("td", null, r.email));
       tr.append(el("td", null, r.foods));
       const resp = el("td");
@@ -849,9 +1109,11 @@ function ruleForm(done) {
     const w = mk("input", "Why it's similar");
     const h = mk("input", "How to get it");
     const p = mk("input", "Price, e.g. $6");
-    g.append(n, e, w, h, p);
+    const t = mk("input", "Minutes (optional, shown in Moms mode), e.g. 20");
+    const l = mk("input", "Love note (optional, shown in Moms mode)");
+    g.append(n, e, w, h, p, t, l);
     respBox.append(g);
-    return { n, e, w, h, p };
+    return { n, e, w, h, p, t, l };
   });
 
   const sync = () => { instrBox.hidden = mode.value !== "instruction"; respBox.hidden = mode.value !== "response"; };
@@ -873,7 +1135,8 @@ function ruleForm(done) {
     } else {
       const suggestions = rows.filter(r => r.n.value.trim()).map(r => ({
         name: r.n.value.trim(), emoji: r.e.value.trim(), why_similar: r.w.value.trim(),
-        how_to_get: r.h.value.trim(), approx_price_usd: r.p.value.trim()
+        how_to_get: r.h.value.trim(), approx_price_usd: r.p.value.trim(),
+        time_minutes: Number(r.t.value) || undefined, love_touch: r.l.value.trim() || undefined
       }));
       if (!suggestions.length) { msg.textContent = "Add at least one dish."; return; }
       row.response = { greeting: greet.value.trim(), suggestions };
@@ -887,7 +1150,7 @@ function ruleForm(done) {
 }
 
 /* ---------- start ---------- */
-applyLang();
+applyMode();
 sb.auth.onAuthStateChange((event, session) => {
   // don't await supabase calls inside this callback; defer them
   if (event === "INITIAL_SESSION" || event === "SIGNED_IN") {
