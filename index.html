@@ -888,6 +888,18 @@ async function enterApp(session) {
 }
 
 /* ---------- full recipes live in the URL (compressed when the browser can) ---------- */
+// prices come back in local money, guessed from the device time zone
+function guessCurrency() {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || "";
+    if (/Jerusalem|Tel_Aviv/.test(tz)) return "ILS";
+    if (tz === "Europe/London") return "GBP";
+    if (tz === "Asia/Tokyo") return "JPY";
+    if (/^Asia\/(Shanghai|Chongqing|Harbin)/.test(tz)) return "CNY";
+    if (/^Europe\//.test(tz)) return "EUR";
+  } catch (e) {}
+  return "USD";
+}
 const pageBase = () => location.href.split(/[?#]/)[0];
 function b64u(bytes) {
   let t = ""; bytes.forEach(b => { t += String.fromCharCode(b); });
@@ -1037,7 +1049,7 @@ async function go() {
     const res = await fetch(SUPABASE_URL + "/functions/v1/food-ai", {
       method: "POST",
       headers: { "Content-Type": "application/json", "Authorization": "Bearer " + session.access_token, "apikey": SUPABASE_ANON_KEY },
-      body: JSON.stringify({ foods, lang, local_time: timeStr, mode, effort, diet: $("diet").value.trim().slice(0, 200) })
+      body: JSON.stringify({ foods, lang, local_time: timeStr, mode, effort, currency: guessCurrency(), diet: $("diet").value.trim().slice(0, 200) })
     });
     const data = await res.json().catch(() => ({}));
     if (seq !== reqSeq) return; // the person switched mode meanwhile
