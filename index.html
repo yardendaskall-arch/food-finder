@@ -234,6 +234,21 @@
   html[data-mode="mom"] .badge { border-width:1px; }
   .chip.sel { background:var(--lemon) !important; }
   html[data-mode="mom"] .chip.sel { background:var(--accent) !important; color:#fff; border-color:var(--accent); }
+  a.btn { display:inline-block; text-align:center; text-decoration:none; color:var(--ink); }
+  .recipe-link { display:inline-block; margin-top:8px; font-family:var(--display); color:var(--ink); background:#fff; border:2.5px solid var(--ink);
+    border-radius:12px; padding:6px 14px; text-decoration:none; box-shadow:0 3px 0 var(--ink); }
+  html[data-mode="mom"] .recipe-link { font-family:var(--body); font-weight:600; color:var(--accent); border:1.5px solid var(--accent); border-radius:999px; box-shadow:none; }
+  .recipe-emoji { font-size:3rem; line-height:1; display:block; margin-bottom:6px; }
+  .recipe-meta { margin:0 0 10px; }
+  #recipeView h3 { margin-top:18px; }
+  #recipeView ul, #recipeView ol { margin:0; padding-inline-start:1.4rem; line-height:1.55; }
+  #recipeView li { margin-bottom:6px; }
+  #recipeView .row { margin-top:14px; }
+  @media print {
+    #decor, header .langpick, .modebar, .noprint { display:none !important; }
+    body { background:#fff !important; padding:0; }
+    .card { box-shadow:none !important; border:0 !important; }
+  }
   .dietbox { margin-bottom:16px; }
   .dietbox label.field { font-size:1.1rem; margin-bottom:8px; }
   html[data-mode="mom"] .dietbox label.field { font-size:1.1rem; }
@@ -334,6 +349,9 @@
 
   <!-- admin panel (data is protected by database rules, not by hiding this) -->
   <section id="adminView" hidden></section>
+
+  <!-- a full recipe, opened from a link: everything it shows lives in the URL -->
+  <section id="recipeView" hidden></section>
 </div>
 
 <script>
@@ -431,12 +449,12 @@ const LANGS = {
 
 // extra UI words, added to every language
 const EXTRA = {
-  en:{ dietLabel:"Allergies or special diet?", dietPh:"vegan, celiac, allergic to cheese...", dietNote:"The AI can make mistakes. Always check labels and ingredients, especially for allergies.", mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
-  he:{ dietLabel:"אלרגיות או תזונה מיוחדת?", dietPh:"טבעוני, צליאק, אלרגיה לגבינה...", dietNote:"ה-AI יכול לטעות. תמיד בדקו תוויות ורכיבים, במיוחד באלרגיות.", mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
-  de:{ dietLabel:"Allergien oder besondere Ernährung?", dietPh:"vegan, Zöliakie, Käseallergie...", dietNote:"Die KI kann Fehler machen. Prüfe immer Etiketten und Zutaten, besonders bei Allergien.", mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
-  es:{ dietLabel:"¿Alergias o dieta especial?", dietPh:"vegano, celíaco, alergia al queso...", dietNote:"La IA puede equivocarse. Revisa siempre etiquetas e ingredientes, sobre todo con alergias.", mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
-  ja:{ dietLabel:"アレルギーや食事制限は？", dietPh:"ヴィーガン、セリアック、チーズアレルギー…", dietNote:"AIは間違えることがあります。特にアレルギーのときは、必ずラベルと原材料を確認してください。", mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
-  zh:{ dietLabel:"有过敏或特殊饮食吗？", dietPh:"纯素、乳糜泻、奶酪过敏...", dietNote:"AI 可能会出错。尤其是过敏时，请务必查看标签和成分。", mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
+  en:{ fullRecipe:"Full recipe", ingr:"Ingredients", stepsH:"Steps", tipsH:"Tips", serves:"Serves", print:"Print", home:"Back to Food Finder", badRecipe:"This recipe link looks broken or incomplete.", dietLabel:"Allergies or special diet?", dietPh:"vegan, celiac, allergic to cheese...", dietNote:"The AI can make mistakes. Always check labels and ingredients, especially for allergies.", mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
+  he:{ fullRecipe:"המתכון המלא", ingr:"מצרכים", stepsH:"שלבים", tipsH:"טיפים", serves:"מספר מנות", print:"הדפסה", home:"חזרה למוצא האוכל", badRecipe:"קישור המתכון נראה שבור או חלקי.", dietLabel:"אלרגיות או תזונה מיוחדת?", dietPh:"טבעוני, צליאק, אלרגיה לגבינה...", dietNote:"ה-AI יכול לטעות. תמיד בדקו תוויות ורכיבים, במיוחד באלרגיות.", mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
+  de:{ fullRecipe:"Ganzes Rezept", ingr:"Zutaten", stepsH:"Schritte", tipsH:"Tipps", serves:"Portionen", print:"Drucken", home:"Zurück zum Essens-Finder", badRecipe:"Dieser Rezeptlink scheint defekt oder unvollständig zu sein.", dietLabel:"Allergien oder besondere Ernährung?", dietPh:"vegan, Zöliakie, Käseallergie...", dietNote:"Die KI kann Fehler machen. Prüfe immer Etiketten und Zutaten, besonders bei Allergien.", mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
+  es:{ fullRecipe:"Receta completa", ingr:"Ingredientes", stepsH:"Pasos", tipsH:"Consejos", serves:"Raciones", print:"Imprimir", home:"Volver al buscador de comida", badRecipe:"Este enlace de receta parece roto o incompleto.", dietLabel:"¿Alergias o dieta especial?", dietPh:"vegano, celíaco, alergia al queso...", dietNote:"La IA puede equivocarse. Revisa siempre etiquetas e ingredientes, sobre todo con alergias.", mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
+  ja:{ fullRecipe:"レシピ全文", ingr:"材料", stepsH:"手順", tipsH:"コツ", serves:"人数", print:"印刷", home:"フードファインダーに戻る", badRecipe:"このレシピのリンクは壊れているか不完全なようです。", dietLabel:"アレルギーや食事制限は？", dietPh:"ヴィーガン、セリアック、チーズアレルギー…", dietNote:"AIは間違えることがあります。特にアレルギーのときは、必ずラベルと原材料を確認してください。", mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
+  zh:{ fullRecipe:"完整食谱", ingr:"食材", stepsH:"步骤", tipsH:"小贴士", serves:"份量", print:"打印", home:"返回美食推荐", badRecipe:"这个食谱链接似乎已损坏或不完整。", dietLabel:"有过敏或特殊饮食吗？", dietPh:"纯素、乳糜泻、奶酪过敏...", dietNote:"AI 可能会出错。尤其是过敏时，请务必查看标签和成分。", mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
 };
 for (const k in EXTRA) Object.assign(LANGS[k], EXTRA[k]);
 
@@ -535,6 +553,8 @@ let currentUserId = null, currentEmail = null;
 let mode = document.documentElement.dataset.mode === "mom" ? "mom" : "kid";
 let effort = localStorage.getItem("ff_effort");
 if (!["e10", "e20", "e40"].includes(effort)) effort = "e20";
+const RECIPE_TOKEN = new URLSearchParams(location.search).get("recipe");
+let recipeData = null;
 let reqSeq = 0; // bumps whenever the mode changes, so a late answer from the other mode is dropped
 function S() { return Object.assign({}, LANGS[lang], mode === "mom" ? MOM[lang] : null); }
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -567,11 +587,12 @@ function drawDecor() {
 }
 
 /* ---------- views ---------- */
-const VIEWS = ["authView", "bannedView", "appView", "adminView"];
+const VIEWS = ["authView", "bannedView", "appView", "adminView", "recipeView"];
 function show(id) {
   VIEWS.forEach(v => { $(v).hidden = v !== id; });
   $("mascot").hidden = !(id === "authView" || id === "appView");
   $("wrap").classList.toggle("wide", id === "adminView");
+  document.querySelector(".modebar").hidden = id === "recipeView";
 }
 
 /* ---------- language ---------- */
@@ -633,6 +654,7 @@ function applyLang() {
     chips.append(b);
   });
   tick();
+  if (recipeData) renderRecipe();
 }
 const dietList = () => $("diet").value.split(/[,،、]\s*/).map(x => x.trim()).filter(Boolean);
 function paintDietChips() {
@@ -681,7 +703,7 @@ function setMode(m) {
 function applyMode() {
   document.documentElement.dataset.mode = mode;
   $("themeColor").setAttribute("content", mode === "mom" ? "#fbf4ec" : "#4a2bd4");
-  try { localStorage.setItem("ff_mode", mode); } catch (e) {}
+  if (!RECIPE_TOKEN) { try { localStorage.setItem("ff_mode", mode); } catch (e) {} }
   drawDecor();
   applyLang();
 }
@@ -865,6 +887,67 @@ async function enterApp(session) {
   show("appView");
 }
 
+/* ---------- full recipes live in the URL (compressed when the browser can) ---------- */
+const pageBase = () => location.href.split(/[?#]/)[0];
+function b64u(bytes) {
+  let t = ""; bytes.forEach(b => { t += String.fromCharCode(b); });
+  return btoa(t).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function unb64u(t) {
+  t = t.replace(/-/g, "+").replace(/_/g, "/");
+  while (t.length % 4) t += "=";
+  return Uint8Array.from(atob(t), c => c.charCodeAt(0));
+}
+async function pipeBytes(bytes, stream) {
+  return new Uint8Array(await new Response(new Blob([bytes]).stream().pipeThrough(stream)).arrayBuffer());
+}
+async function packRecipe(obj) {
+  const raw = new TextEncoder().encode(JSON.stringify(obj));
+  try { if (window.CompressionStream) return "z" + b64u(await pipeBytes(raw, new CompressionStream("deflate-raw"))); } catch (e) {}
+  return "p" + b64u(raw);
+}
+async function unpackRecipe(tok) {
+  let bytes = unb64u(tok.slice(1));
+  if (tok[0] === "z") bytes = await pipeBytes(bytes, new DecompressionStream("deflate-raw"));
+  else if (tok[0] !== "p") throw new Error("bad token");
+  return JSON.parse(new TextDecoder().decode(bytes));
+}
+// the URL is untrusted input: keep only the fields we expect, cut to sane sizes
+function cleanLoaded(p) {
+  if (!p || typeof p !== "object" || !p.r || !Array.isArray(p.r.ingredients) || !Array.isArray(p.r.steps)) return null;
+  const str = (x, n) => String(x == null ? "" : x).slice(0, n);
+  return { n: str(p.n, 120), e: firstEmoji(p.e), l: LANGS[p.l] ? p.l : "en", m: p.m === "mom" ? "mom" : "kid",
+    r: { servings: Number(p.r.servings) || 0, total_minutes: Number(p.r.total_minutes) || 0,
+         ingredients: p.r.ingredients.slice(0, 30).map(x => str(x, 200)),
+         steps: p.r.steps.slice(0, 30).map(x => str(x, 600)), tips: str(p.r.tips, 500) } };
+}
+function renderRecipe() {
+  const L = S(), v = $("recipeView"), d = recipeData;
+  v.replaceChildren();
+  const card = el("div", "card");
+  if (!d) {
+    card.append(el("h2", null, "🍽️"), el("p", "error", L.badRecipe));
+  } else {
+    card.append(el("span", "recipe-emoji", d.e), el("h2", null, d.n));
+    const meta = el("p", "recipe-meta");
+    if (d.r.servings) meta.append(el("span", "meta", "🍽 " + L.serves + ": " + d.r.servings), document.createTextNode(" "));
+    if (d.r.total_minutes) meta.append(el("span", "meta", "⏱ " + d.r.total_minutes + " " + (L.min || "min")));
+    card.append(meta);
+    card.append(el("h3", null, "🛒 " + L.ingr));
+    const ul = el("ul"); d.r.ingredients.forEach(x => ul.append(el("li", null, x))); card.append(ul);
+    card.append(el("h3", null, "🍳 " + L.stepsH));
+    const ol = el("ol"); d.r.steps.forEach(x => ol.append(el("li", null, x))); card.append(ol);
+    if (d.r.tips) card.append(el("h3", null, "💡 " + L.tipsH), el("p", null, d.r.tips));
+    card.append(el("p", "notice", L.dietNote));
+  }
+  const row = el("div", "row noprint");
+  if (d) { const pb = el("button", "btn", "🖨 " + L.print); pb.type = "button"; pb.onclick = () => window.print(); row.append(pb); }
+  const home = el("a", "btn white", "← " + L.home); home.href = pageBase();
+  row.append(home);
+  card.append(row);
+  v.append(card);
+}
+
 /* ---------- results: the bento lunchbox ---------- */
 function confetti() {
   if (reduceMotion) return;
@@ -903,6 +986,14 @@ function renderResult(out, parsed) {
     const how = el("p", "how");
     how.append(el("b", null, (mode === "mom" ? "🍳 " : "👩‍🍳 ") + L.easy), document.createTextNode(s.how_to_get || ""));
     box.append(how);
+    if (s.full_recipe && Array.isArray(s.full_recipe.steps) && s.full_recipe.steps.length) {
+      const a = el("a", "recipe-link", "📖 " + (L.fullRecipe || "Full recipe"));
+      a.target = "_blank"; a.rel = "noopener"; a.href = "#";
+      const snap = mode;
+      packRecipe({ v: 1, n: s.name || "", e: firstEmoji(s.emoji), l: lang, m: snap, r: s.full_recipe })
+        .then(t => { a.href = pageBase() + "?mode=" + snap + "&recipe=" + t; });
+      box.append(a);
+    }
     if (s.love_touch) {
       const love = el("p", "love");
       love.append(el("b", null, "💌 " + (L.love || "")), document.createTextNode(s.love_touch));
@@ -1205,6 +1296,17 @@ function ruleForm(done) {
 }
 
 /* ---------- start ---------- */
+if (RECIPE_TOKEN) {
+  // a shared recipe link: no sign-in needed, everything is in the URL
+  (async () => {
+    try { if (RECIPE_TOKEN.length > 40000) throw new Error("too long"); recipeData = cleanLoaded(await unpackRecipe(RECIPE_TOKEN)); }
+    catch (e) { recipeData = null; }
+    if (recipeData) { lang = recipeData.l; mode = recipeData.m; }
+    applyMode();
+    show("recipeView");
+    renderRecipe();
+  })();
+} else {
 applyMode();
 sb.auth.onAuthStateChange((event, session) => {
   // don't await supabase calls inside this callback; defer them
@@ -1215,6 +1317,7 @@ sb.auth.onAuthStateChange((event, session) => {
     setTimeout(() => enterApp(null), 0);
   }
 });
+}
 </script>
 </body>
 </html>
