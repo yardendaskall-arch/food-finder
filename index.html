@@ -249,6 +249,8 @@
     body { background:#fff !important; padding:0; }
     .card { box-shadow:none !important; border:0 !important; }
   }
+  .bento .btn.small { margin-top:8px; margin-inline-start:8px; }
+  .save-msg { display:block; margin:6px 0 0; }
   .dietbox { margin-bottom:16px; }
   .dietbox label.field { font-size:1.1rem; margin-bottom:8px; }
   html[data-mode="mom"] .dietbox label.field { font-size:1.1rem; }
@@ -286,6 +288,7 @@
 
   <div class="userbar" id="userbar" hidden>
     <span id="who"></span>
+    <button class="btn small white" id="savedBtn"></button>
     <button class="btn small pink" id="adminBtn" hidden>Admin</button>
     <button class="btn small white" id="outBtn"></button>
   </div>
@@ -352,6 +355,9 @@
 
   <!-- a full recipe, opened from a link: everything it shows lives in the URL -->
   <section id="recipeView" hidden></section>
+
+  <!-- the person's saved dishes (stored in the database, only they can see them) -->
+  <section id="savedView" hidden></section>
 </div>
 
 <script>
@@ -449,12 +455,12 @@ const LANGS = {
 
 // extra UI words, added to every language
 const EXTRA = {
-  en:{ fullRecipe:"Full recipe", ingr:"Ingredients", stepsH:"Steps", tipsH:"Tips", serves:"Serves", print:"Print", home:"Back to Food Finder", badRecipe:"This recipe link looks broken or incomplete.", dietLabel:"Allergies or special diet?", dietPh:"vegan, celiac, allergic to cheese...", dietNote:"The AI can make mistakes. Always check labels and ingredients, especially for allergies.", mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
-  he:{ fullRecipe:"המתכון המלא", ingr:"מצרכים", stepsH:"שלבים", tipsH:"טיפים", serves:"מספר מנות", print:"הדפסה", home:"חזרה למוצא האוכל", badRecipe:"קישור המתכון נראה שבור או חלקי.", dietLabel:"אלרגיות או תזונה מיוחדת?", dietPh:"טבעוני, צליאק, אלרגיה לגבינה...", dietNote:"ה-AI יכול לטעות. תמיד בדקו תוויות ורכיבים, במיוחד באלרגיות.", mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
-  de:{ fullRecipe:"Ganzes Rezept", ingr:"Zutaten", stepsH:"Schritte", tipsH:"Tipps", serves:"Portionen", print:"Drucken", home:"Zurück zum Essens-Finder", badRecipe:"Dieser Rezeptlink scheint defekt oder unvollständig zu sein.", dietLabel:"Allergien oder besondere Ernährung?", dietPh:"vegan, Zöliakie, Käseallergie...", dietNote:"Die KI kann Fehler machen. Prüfe immer Etiketten und Zutaten, besonders bei Allergien.", mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
-  es:{ fullRecipe:"Receta completa", ingr:"Ingredientes", stepsH:"Pasos", tipsH:"Consejos", serves:"Raciones", print:"Imprimir", home:"Volver al buscador de comida", badRecipe:"Este enlace de receta parece roto o incompleto.", dietLabel:"¿Alergias o dieta especial?", dietPh:"vegano, celíaco, alergia al queso...", dietNote:"La IA puede equivocarse. Revisa siempre etiquetas e ingredientes, sobre todo con alergias.", mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
-  ja:{ fullRecipe:"レシピ全文", ingr:"材料", stepsH:"手順", tipsH:"コツ", serves:"人数", print:"印刷", home:"フードファインダーに戻る", badRecipe:"このレシピのリンクは壊れているか不完全なようです。", dietLabel:"アレルギーや食事制限は？", dietPh:"ヴィーガン、セリアック、チーズアレルギー…", dietNote:"AIは間違えることがあります。特にアレルギーのときは、必ずラベルと原材料を確認してください。", mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
-  zh:{ fullRecipe:"完整食谱", ingr:"食材", stepsH:"步骤", tipsH:"小贴士", serves:"份量", print:"打印", home:"返回美食推荐", badRecipe:"这个食谱链接似乎已损坏或不完整。", dietLabel:"有过敏或特殊饮食吗？", dietPh:"纯素、乳糜泻、奶酪过敏...", dietNote:"AI 可能会出错。尤其是过敏时，请务必查看标签和成分。", mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
+  en:{ save:"♡ Save", savedOn:"♥ Saved", savedShort:"Saved", savedTitle:"Saved recipes", savedEmpty:"Nothing saved yet. Tap Save on a dish you like.", remove:"Remove", back:"Back", saveFail:"Couldn't save: ", savedLimit:"You've reached the limit of 100 saved recipes. Remove one first.", fullRecipe:"Full recipe", ingr:"Ingredients", stepsH:"Steps", tipsH:"Tips", serves:"Serves", print:"Print", home:"Back to Food Finder", badRecipe:"This recipe link looks broken or incomplete.", dietLabel:"Allergies or special diet?", dietPh:"vegan, celiac, allergic to cheese...", dietNote:"The AI can make mistakes. Always check labels and ingredients, especially for allergies.", mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
+  he:{ save:"♡ שמירה", savedOn:"♥ נשמר", savedShort:"שמורים", savedTitle:"מתכונים שמורים", savedEmpty:"עוד לא שמרתם כלום. לחצו על שמירה ליד מנה שאהבתם.", remove:"הסרה", back:"חזרה", saveFail:"השמירה נכשלה: ", savedLimit:"הגעתם למגבלה של 100 מתכונים שמורים. הסירו אחד קודם.", fullRecipe:"המתכון המלא", ingr:"מצרכים", stepsH:"שלבים", tipsH:"טיפים", serves:"מספר מנות", print:"הדפסה", home:"חזרה למוצא האוכל", badRecipe:"קישור המתכון נראה שבור או חלקי.", dietLabel:"אלרגיות או תזונה מיוחדת?", dietPh:"טבעוני, צליאק, אלרגיה לגבינה...", dietNote:"ה-AI יכול לטעות. תמיד בדקו תוויות ורכיבים, במיוחד באלרגיות.", mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
+  de:{ save:"♡ Speichern", savedOn:"♥ Gespeichert", savedShort:"Gespeichert", savedTitle:"Gespeicherte Rezepte", savedEmpty:"Noch nichts gespeichert. Tippe bei einem Gericht, das dir gefällt, auf Speichern.", remove:"Entfernen", back:"Zurück", saveFail:"Speichern fehlgeschlagen: ", savedLimit:"Du hast das Limit von 100 gespeicherten Rezepten erreicht. Entferne zuerst eines.", fullRecipe:"Ganzes Rezept", ingr:"Zutaten", stepsH:"Schritte", tipsH:"Tipps", serves:"Portionen", print:"Drucken", home:"Zurück zum Essens-Finder", badRecipe:"Dieser Rezeptlink scheint defekt oder unvollständig zu sein.", dietLabel:"Allergien oder besondere Ernährung?", dietPh:"vegan, Zöliakie, Käseallergie...", dietNote:"Die KI kann Fehler machen. Prüfe immer Etiketten und Zutaten, besonders bei Allergien.", mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
+  es:{ save:"♡ Guardar", savedOn:"♥ Guardado", savedShort:"Guardadas", savedTitle:"Recetas guardadas", savedEmpty:"Aún no has guardado nada. Toca Guardar en un plato que te guste.", remove:"Quitar", back:"Volver", saveFail:"No se pudo guardar: ", savedLimit:"Has llegado al límite de 100 recetas guardadas. Quita una primero.", fullRecipe:"Receta completa", ingr:"Ingredientes", stepsH:"Pasos", tipsH:"Consejos", serves:"Raciones", print:"Imprimir", home:"Volver al buscador de comida", badRecipe:"Este enlace de receta parece roto o incompleto.", dietLabel:"¿Alergias o dieta especial?", dietPh:"vegano, celíaco, alergia al queso...", dietNote:"La IA puede equivocarse. Revisa siempre etiquetas e ingredientes, sobre todo con alergias.", mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
+  ja:{ save:"♡ 保存", savedOn:"♥ 保存済み", savedShort:"保存", savedTitle:"保存したレシピ", savedEmpty:"まだ何も保存されていません。気に入った料理の「保存」をタップしてね。", remove:"削除", back:"戻る", saveFail:"保存できませんでした：", savedLimit:"保存できるのは100件までです。先にどれか削除してください。", fullRecipe:"レシピ全文", ingr:"材料", stepsH:"手順", tipsH:"コツ", serves:"人数", print:"印刷", home:"フードファインダーに戻る", badRecipe:"このレシピのリンクは壊れているか不完全なようです。", dietLabel:"アレルギーや食事制限は？", dietPh:"ヴィーガン、セリアック、チーズアレルギー…", dietNote:"AIは間違えることがあります。特にアレルギーのときは、必ずラベルと原材料を確認してください。", mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
+  zh:{ save:"♡ 收藏", savedOn:"♥ 已收藏", savedShort:"收藏夹", savedTitle:"已收藏的食谱", savedEmpty:"还没有收藏。点你喜欢的菜上的“收藏”。", remove:"移除", back:"返回", saveFail:"收藏失败：", savedLimit:"已达到100个收藏上限，请先移除一个。", fullRecipe:"完整食谱", ingr:"食材", stepsH:"步骤", tipsH:"小贴士", serves:"份量", print:"打印", home:"返回美食推荐", badRecipe:"这个食谱链接似乎已损坏或不完整。", dietLabel:"有过敏或特殊饮食吗？", dietPh:"纯素、乳糜泻、奶酪过敏...", dietNote:"AI 可能会出错。尤其是过敏时，请务必查看标签和成分。", mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
 };
 for (const k in EXTRA) Object.assign(LANGS[k], EXTRA[k]);
 
@@ -587,12 +593,13 @@ function drawDecor() {
 }
 
 /* ---------- views ---------- */
-const VIEWS = ["authView", "bannedView", "appView", "adminView", "recipeView"];
+const VIEWS = ["authView", "bannedView", "appView", "adminView", "recipeView", "savedView"];
 function show(id) {
   VIEWS.forEach(v => { $(v).hidden = v !== id; });
   $("mascot").hidden = !(id === "authView" || id === "appView");
   $("wrap").classList.toggle("wide", id === "adminView");
   document.querySelector(".modebar").hidden = id === "recipeView";
+  $("savedBtn").hidden = id === "bannedView";
 }
 
 /* ---------- language ---------- */
@@ -621,6 +628,7 @@ function applyLang() {
   $("btnSignup").textContent = L.signup;
   $("btnResend").textContent = L.resend;
   $("outBtn").textContent = L.signout;
+  $("savedBtn").textContent = "♥ " + L.savedShort;
   $("privacy").textContent = L.privacy;
   $("bannedMsg").textContent = L.banned;
   document.title = L.title;
@@ -655,6 +663,7 @@ function applyLang() {
   });
   tick();
   if (recipeData) renderRecipe();
+  if (!$("savedView").hidden) renderSaved();
 }
 const dietList = () => $("diet").value.split(/[,،、]\s*/).map(x => x.trim()).filter(Boolean);
 function paintDietChips() {
@@ -819,6 +828,7 @@ fetch(SUPABASE_URL + "/auth/v1/settings", { headers: { apikey: SUPABASE_ANON_KEY
   .catch(() => {});
 $("outBtn").addEventListener("click", () => sb.auth.signOut());
 $("adminBtn").addEventListener("click", () => { renderAdmin(); show("adminView"); });
+$("savedBtn").addEventListener("click", () => { show("savedView"); renderSaved(); });
 
 function showBanned(reason) {
   $("bannedMsg").textContent = S().banned;
@@ -980,6 +990,91 @@ function firstEmoji(v) {
   return chars.length && chars.length <= 4 ? chars.join("") : "🍽️";
 }
 
+// one dish card; m / lg are the mode and language it was made in (used for its full-recipe link)
+function suggestionBox(s, m, lg) {
+  const L = S();
+  const box = el("div", "bento");
+  box.append(el("span", "price", s.approx_price_usd || L.budget));
+  box.append(el("span", "big-emoji", firstEmoji(s.emoji)));
+  box.append(el("h3", null, s.name || ""));
+  const mins = Number(s.time_minutes);
+  if (mins > 0 && mins < 600) box.append(el("span", "meta", "⏱ " + Math.round(mins) + " " + (L.min || "min")));
+  box.append(el("p", null, s.why_similar || ""));
+  const how = el("p", "how");
+  how.append(el("b", null, (mode === "mom" ? "🍳 " : "👩‍🍳 ") + L.easy), document.createTextNode(s.how_to_get || ""));
+  box.append(how);
+  if (s.full_recipe && Array.isArray(s.full_recipe.steps) && s.full_recipe.steps.length) {
+    const a = el("a", "recipe-link", "📖 " + (L.fullRecipe || "Full recipe"));
+    a.target = "_blank"; a.rel = "noopener"; a.href = "#";
+    packRecipe({ v: 1, n: s.name || "", e: firstEmoji(s.emoji), l: lg, m, r: s.full_recipe })
+      .then(t => { a.href = pageBase() + "?mode=" + m + "&recipe=" + t; });
+    box.append(a);
+  }
+  if (s.love_touch) {
+    const love = el("p", "love");
+    love.append(el("b", null, "💌 " + (L.love || "")), document.createTextNode(s.love_touch));
+    box.append(love);
+  }
+  return box;
+}
+
+// Save / unsave a dish (stored per account in the database)
+function saveButton(sg) {
+  const L = S();
+  const b = el("button", "btn small white save-btn", L.save);
+  b.type = "button";
+  const msg = el("span", "notice error save-msg");
+  msg.hidden = true;
+  let rowId = null, busy = false;
+  const paint = () => { b.textContent = rowId ? L.savedOn : L.save; b.setAttribute("aria-pressed", String(!!rowId)); };
+  b.onclick = async () => {
+    if (busy) return;
+    busy = true; msg.hidden = true;
+    if (rowId) {
+      const { error } = await sb.from("saved_recipes").delete().eq("id", rowId);
+      if (error) { msg.textContent = L.saveFail + error.message; msg.hidden = false; } else rowId = null;
+    } else {
+      const { data, error } = await sb.from("saved_recipes").insert({ mode, lang, item: sg }).select("id").single();
+      if (error) { msg.textContent = /saved_limit/.test(error.message) ? L.savedLimit : L.saveFail + error.message; msg.hidden = false; }
+      else rowId = data.id;
+    }
+    paint(); busy = false;
+  };
+  const wrap = el("span");
+  wrap.style.display = "contents";
+  wrap.append(b, msg);
+  return wrap;
+}
+
+async function renderSaved() {
+  const v = $("savedView"), L = S();
+  v.replaceChildren();
+  const bar = el("div", "tabs");
+  const back = el("button", "btn small pink", "← " + L.back);
+  back.onclick = () => show("appView");
+  bar.append(back);
+  v.append(bar, el("div", "bubble says", "♥ " + L.savedTitle));
+  const { data, error } = await sb.from("saved_recipes").select("id, mode, lang, item").order("created_at", { ascending: false });
+  if ($("savedView").hidden) return;
+  if (error) { v.append(el("p", "bubble says error", L.saveFail + error.message)); return; }
+  if (!data.length) { v.append(el("div", "bubble says", L.savedEmpty)); return; }
+  const tray = el("div", "tray");
+  data.forEach(row => {
+    const box = suggestionBox(row.item || {}, row.mode, row.lang);
+    const del = el("button", "btn small danger", L.remove);
+    del.type = "button";
+    del.onclick = async () => {
+      del.disabled = true;
+      const { error: e } = await sb.from("saved_recipes").delete().eq("id", row.id);
+      if (e) { del.disabled = false; alert(e.message); } else box.remove();
+      if (!tray.children.length) renderSaved();
+    };
+    box.append(del);
+    tray.append(box);
+  });
+  v.append(tray);
+}
+
 function renderResult(out, parsed) {
   const L = S();
   out.replaceChildren();
@@ -987,30 +1082,9 @@ function renderResult(out, parsed) {
   if (parsed.common_thread) out.append(el("div", "bubble says", (mode === "mom" ? "💛 " : "🔎 ") + parsed.common_thread));
 
   const tray = el("div", "tray");
-  (parsed.suggestions || []).forEach(s => {
-    const box = el("div", "bento");
-    box.append(el("span", "price", s.approx_price_usd || L.budget));
-    box.append(el("span", "big-emoji", firstEmoji(s.emoji)));
-    box.append(el("h3", null, s.name || ""));
-    const mins = Number(s.time_minutes);
-    if (mins > 0 && mins < 600) box.append(el("span", "meta", "⏱ " + Math.round(mins) + " " + (L.min || "min")));
-    box.append(el("p", null, s.why_similar || ""));
-    const how = el("p", "how");
-    how.append(el("b", null, (mode === "mom" ? "🍳 " : "👩‍🍳 ") + L.easy), document.createTextNode(s.how_to_get || ""));
-    box.append(how);
-    if (s.full_recipe && Array.isArray(s.full_recipe.steps) && s.full_recipe.steps.length) {
-      const a = el("a", "recipe-link", "📖 " + (L.fullRecipe || "Full recipe"));
-      a.target = "_blank"; a.rel = "noopener"; a.href = "#";
-      const snap = mode;
-      packRecipe({ v: 1, n: s.name || "", e: firstEmoji(s.emoji), l: lang, m: snap, r: s.full_recipe })
-        .then(t => { a.href = pageBase() + "?mode=" + snap + "&recipe=" + t; });
-      box.append(a);
-    }
-    if (s.love_touch) {
-      const love = el("p", "love");
-      love.append(el("b", null, "💌 " + (L.love || "")), document.createTextNode(s.love_touch));
-      box.append(love);
-    }
+  (parsed.suggestions || []).forEach(sg => {
+    const box = suggestionBox(sg, mode, lang);
+    box.append(saveButton(sg));
     tray.append(box);
   });
   out.append(tray);
