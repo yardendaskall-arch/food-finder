@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#4a2bd4" id="themeColor">
-<script>try{var m=new URLSearchParams(location.search).get("mode")||localStorage.getItem("ff_mode");document.documentElement.dataset.mode=(m==="mom")?"mom":"kid";}catch(e){document.documentElement.dataset.mode="kid";}</script>
+<script>try{var m=new URLSearchParams(location.search).get("mode")||localStorage.getItem("ff_mode");document.documentElement.dataset.mode=(m==="mom"||m==="chef")?m:"kid";}catch(e){document.documentElement.dataset.mode="kid";}</script>
 <title>Food Finder</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -248,6 +248,7 @@
     #decor, header .langpick, .modebar, .noprint { display:none !important; }
     body { background:#fff !important; padding:0; }
     .card { box-shadow:none !important; border:0 !important; }
+    html[data-mode] .card, html[data-mode] .card * { color:#000 !important; background:#fff !important; }
   }
   .bento .btn.small { margin-top:8px; margin-inline-start:8px; }
   .save-msg { display:block; margin:6px 0 0; }
@@ -257,6 +258,76 @@
   .dietbox input { margin-bottom:8px; }
   .dietbox .chips { margin-bottom:4px; }
   .dietbox .notice { margin-top:4px; }
+
+  /* ===== CHEF theme: dark kitchen, copper and gold ===== */
+  html[data-mode="chef"] {
+    --ink:#f3e9dd; --soft:#a89a8c; --accent:#d98a4a; --accent-d:#9c5a2a; --gold:#e8b45a; --line:#3b3029; --card:#1d1814; --card2:#26201a; --on-accent:#1a120b;
+    --display:"Fraunces","Frank Ruhl Libre","Noto Serif JP","Noto Serif SC",Georgia,serif;
+    --body:"DM Sans","Noto Sans JP","Noto Sans SC",system-ui,sans-serif;
+  }
+  html[data-mode="chef"] body { background-color:#12100e; background-size:auto; background-attachment:fixed; font-weight:500;
+    background-image:radial-gradient(circle at 15% 0,#3a2314 0,transparent 40%),radial-gradient(circle at 100% 35%,#2a1d12 0,transparent 36%); }
+  html[data-mode="chef"] :focus-visible { outline-color:var(--gold); }
+  html[data-mode="chef"] #decor span { opacity:.07; filter:grayscale(.3); }
+  html[data-mode="chef"] .logo { font-weight:600; color:var(--gold); -webkit-text-stroke:0; text-shadow:none; transform:none; letter-spacing:-.01em; }
+  html[data-mode="chef"] .langpick select { background:var(--card); color:var(--ink); border:1.5px solid var(--line); box-shadow:none; font-weight:500; }
+  html[data-mode="chef"] .userbar { background:var(--card); border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="chef"] .bubble { background:var(--card); border:1.5px solid var(--line); box-shadow:none; border-radius:18px; font-weight:500; font-size:1.02rem; }
+  html[data-mode="chef"] .bubble::before { background:var(--card); border-inline-start:1.5px solid var(--line); border-bottom:1.5px solid var(--line); }
+  html[data-mode="chef"] .mascot-face { font-size:2.6rem; }
+  html[data-mode="chef"] .card { background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 14px 34px rgba(0,0,0,.5); }
+  html[data-mode="chef"] .card.inner { background:var(--card2); box-shadow:none; }
+  html[data-mode="chef"] .clock { background:#2b231d; color:var(--ink); border:0; font-weight:600; }
+  html[data-mode="chef"] label.field { font-weight:600; }
+  html[data-mode="chef"] h2, html[data-mode="chef"] h3 { font-weight:600; }
+  html[data-mode="chef"] input, html[data-mode="chef"] textarea, html[data-mode="chef"] select.plain { background:#272019; color:var(--ink); border:1.5px solid var(--line); border-radius:14px; font-weight:500; }
+  html[data-mode="chef"] input::placeholder, html[data-mode="chef"] textarea::placeholder { color:#8a7c6e; }
+  html[data-mode="chef"] .card.inner input, html[data-mode="chef"] .card.inner textarea, html[data-mode="chef"] .card.inner select.plain { background:#2d251e; }
+  html[data-mode="chef"] button { font-family:var(--body); font-weight:600; }
+  html[data-mode="chef"] .btn { background:var(--accent); color:var(--on-accent); border:0; border-radius:999px; box-shadow:0 3px 0 var(--accent-d); }
+  html[data-mode="chef"] .btn:active { transform:translateY(2px); box-shadow:0 1px 0 var(--accent-d); }
+  html[data-mode="chef"] .btn.big { font-size:1.2rem; padding:15px; border:0; border-radius:999px; box-shadow:0 4px 0 var(--accent-d); }
+  html[data-mode="chef"] .btn.big:active { transform:translateY(3px); box-shadow:0 1px 0 var(--accent-d); }
+  html[data-mode="chef"] .btn.white { background:#2a231d; color:var(--ink); border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="chef"] .btn.pink { background:#5f7f64; color:#fff; box-shadow:0 3px 0 #48634c; }
+  html[data-mode="chef"] .btn.danger { background:#b3382c; color:#fff; box-shadow:0 3px 0 #8a2a21; }
+  html[data-mode="chef"] .btn.on { background:#3a2f26; color:var(--ink); }
+  html[data-mode="chef"] .btn.small { padding:6px 14px; font-size:.9rem; border-width:0; box-shadow:none; }
+  html[data-mode="chef"] .btn.small.white { border:1.5px solid var(--line); }
+  html[data-mode="chef"] .btn.oauth.apple { background:#000; color:#fff; border:1px solid var(--line); box-shadow:none; }
+  html[data-mode="chef"] .btn.oauth.google { background:#fff; color:#3a2a25; box-shadow:none; }
+  html[data-mode="chef"] a.btn { color:var(--on-accent); }
+  html[data-mode="chef"] a.btn.white { color:var(--ink); }
+  html[data-mode="chef"] .or::before, html[data-mode="chef"] .or::after { background:var(--line); }
+  html[data-mode="chef"] .chip, html[data-mode="chef"] .chip:nth-child(n) { background:var(--card2); color:var(--ink); font-family:var(--body); font-weight:500; border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="chef"] .chip.sel { background:var(--accent) !important; color:var(--on-accent); border-color:var(--accent); }
+  html[data-mode="chef"] .seg { background:var(--card); border:1.5px solid var(--line); box-shadow:none; }
+  html[data-mode="chef"] .seg button { font-family:var(--body); font-weight:600; font-size:.95rem; color:var(--ink); }
+  html[data-mode="chef"] .seg button[aria-pressed="true"] { background:var(--accent); color:var(--on-accent); }
+  html[data-mode="chef"] .tray { background:transparent; padding:0; gap:14px; border-radius:0; grid-template-columns:1fr; }
+  html[data-mode="chef"] .bento, html[data-mode="chef"] .bento:nth-child(n) { background:var(--card); color:var(--ink); border:1px solid var(--line); border-inline-start:6px solid var(--accent);
+    border-radius:20px; box-shadow:0 10px 26px rgba(0,0,0,.4); animation:rise .5s ease both; }
+  html[data-mode="chef"] .bento:nth-child(2) { border-inline-start-color:var(--gold); animation-delay:.1s; }
+  html[data-mode="chef"] .bento:nth-child(3) { border-inline-start-color:#9bb08a; animation-delay:.2s; }
+  html[data-mode="chef"] .bento .big-emoji { font-size:2.4rem; }
+  html[data-mode="chef"] .bento h3 { font-size:1.4rem; padding-inline-end:84px; }
+  html[data-mode="chef"] .bento .how b { font-family:var(--body); font-weight:600; font-size:.95rem; color:var(--accent); }
+  html[data-mode="chef"] .price { background:#33271a; color:var(--gold); border:0; transform:none; box-shadow:none; top:14px; inset-inline-end:14px; font-family:var(--body); font-weight:600; font-size:.95rem; }
+  html[data-mode="chef"] .meta { background:#2b231d; color:var(--ink); font-weight:600; }
+  html[data-mode="chef"] .love { background:#2a1f17; font-style:italic; font-family:var(--display); }
+  html[data-mode="chef"] .love b { font-family:var(--body); font-style:normal; font-weight:600; font-size:.9rem; color:var(--gold); }
+  html[data-mode="chef"] .thinking { background:var(--card); color:var(--ink); font-family:var(--display); font-weight:600; font-size:1.2rem; }
+  html[data-mode="chef"] .recipe-link { background:transparent; font-family:var(--body); font-weight:600; color:var(--accent); border:1.5px solid var(--accent); border-radius:999px; box-shadow:none; }
+  html[data-mode="chef"] .error { color:#ff8a80; }
+  html[data-mode="chef"] .ok { color:#6fd39b; }
+  html[data-mode="chef"] th { background:var(--card2); }
+  html[data-mode="chef"] th, html[data-mode="chef"] td { border-bottom-color:var(--line); }
+  html[data-mode="chef"] .badge { background:#2b231d; color:var(--ink); border-color:var(--line); border-width:1px; }
+  html[data-mode="chef"] .badge.override { background:#4a3a16; }
+  html[data-mode="chef"] .badge.banned { background:#6b2a2a; }
+  html[data-mode="chef"] .badge.active { background:#27432f; }
+  html[data-mode="chef"] .sugg { border-top-color:var(--line); }
+  html[data-mode="chef"] td pre { color:var(--soft); }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
@@ -283,6 +354,7 @@
     <div class="seg" id="modebar" role="group">
       <button type="button" id="modeKid" aria-pressed="true"></button>
       <button type="button" id="modeMom" aria-pressed="false"></button>
+      <button type="button" id="modeChef" aria-pressed="false"></button>
     </div>
   </div>
 
@@ -455,12 +527,12 @@ const LANGS = {
 
 // extra UI words, added to every language
 const EXTRA = {
-  en:{ save:"♡ Save", savedOn:"♥ Saved", savedShort:"Saved", savedTitle:"Saved recipes", savedEmpty:"Nothing saved yet. Tap Save on a dish you like.", remove:"Remove", back:"Back", saveFail:"Couldn't save: ", savedLimit:"You've reached the limit of 100 saved recipes. Remove one first.", fullRecipe:"Full recipe", ingr:"Ingredients", stepsH:"Steps", tipsH:"Tips", serves:"Serves", print:"Print", home:"Back to Food Finder", badRecipe:"This recipe link looks broken or incomplete.", dietLabel:"Allergies or special diet?", dietPh:"vegan, celiac, allergic to cheese...", dietNote:"The AI can make mistakes. Always check labels and ingredients, especially for allergies.", mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
-  he:{ save:"♡ שמירה", savedOn:"♥ נשמר", savedShort:"שמורים", savedTitle:"מתכונים שמורים", savedEmpty:"עוד לא שמרתם כלום. לחצו על שמירה ליד מנה שאהבתם.", remove:"הסרה", back:"חזרה", saveFail:"השמירה נכשלה: ", savedLimit:"הגעתם למגבלה של 100 מתכונים שמורים. הסירו אחד קודם.", fullRecipe:"המתכון המלא", ingr:"מצרכים", stepsH:"שלבים", tipsH:"טיפים", serves:"מספר מנות", print:"הדפסה", home:"חזרה למוצא האוכל", badRecipe:"קישור המתכון נראה שבור או חלקי.", dietLabel:"אלרגיות או תזונה מיוחדת?", dietPh:"טבעוני, צליאק, אלרגיה לגבינה...", dietNote:"ה-AI יכול לטעות. תמיד בדקו תוויות ורכיבים, במיוחד באלרגיות.", mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
-  de:{ save:"♡ Speichern", savedOn:"♥ Gespeichert", savedShort:"Gespeichert", savedTitle:"Gespeicherte Rezepte", savedEmpty:"Noch nichts gespeichert. Tippe bei einem Gericht, das dir gefällt, auf Speichern.", remove:"Entfernen", back:"Zurück", saveFail:"Speichern fehlgeschlagen: ", savedLimit:"Du hast das Limit von 100 gespeicherten Rezepten erreicht. Entferne zuerst eines.", fullRecipe:"Ganzes Rezept", ingr:"Zutaten", stepsH:"Schritte", tipsH:"Tipps", serves:"Portionen", print:"Drucken", home:"Zurück zum Essens-Finder", badRecipe:"Dieser Rezeptlink scheint defekt oder unvollständig zu sein.", dietLabel:"Allergien oder besondere Ernährung?", dietPh:"vegan, Zöliakie, Käseallergie...", dietNote:"Die KI kann Fehler machen. Prüfe immer Etiketten und Zutaten, besonders bei Allergien.", mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
-  es:{ save:"♡ Guardar", savedOn:"♥ Guardado", savedShort:"Guardadas", savedTitle:"Recetas guardadas", savedEmpty:"Aún no has guardado nada. Toca Guardar en un plato que te guste.", remove:"Quitar", back:"Volver", saveFail:"No se pudo guardar: ", savedLimit:"Has llegado al límite de 100 recetas guardadas. Quita una primero.", fullRecipe:"Receta completa", ingr:"Ingredientes", stepsH:"Pasos", tipsH:"Consejos", serves:"Raciones", print:"Imprimir", home:"Volver al buscador de comida", badRecipe:"Este enlace de receta parece roto o incompleto.", dietLabel:"¿Alergias o dieta especial?", dietPh:"vegano, celíaco, alergia al queso...", dietNote:"La IA puede equivocarse. Revisa siempre etiquetas e ingredientes, sobre todo con alergias.", mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
-  ja:{ save:"♡ 保存", savedOn:"♥ 保存済み", savedShort:"保存", savedTitle:"保存したレシピ", savedEmpty:"まだ何も保存されていません。気に入った料理の「保存」をタップしてね。", remove:"削除", back:"戻る", saveFail:"保存できませんでした：", savedLimit:"保存できるのは100件までです。先にどれか削除してください。", fullRecipe:"レシピ全文", ingr:"材料", stepsH:"手順", tipsH:"コツ", serves:"人数", print:"印刷", home:"フードファインダーに戻る", badRecipe:"このレシピのリンクは壊れているか不完全なようです。", dietLabel:"アレルギーや食事制限は？", dietPh:"ヴィーガン、セリアック、チーズアレルギー…", dietNote:"AIは間違えることがあります。特にアレルギーのときは、必ずラベルと原材料を確認してください。", mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
-  zh:{ save:"♡ 收藏", savedOn:"♥ 已收藏", savedShort:"收藏夹", savedTitle:"已收藏的食谱", savedEmpty:"还没有收藏。点你喜欢的菜上的“收藏”。", remove:"移除", back:"返回", saveFail:"收藏失败：", savedLimit:"已达到100个收藏上限，请先移除一个。", fullRecipe:"完整食谱", ingr:"食材", stepsH:"步骤", tipsH:"小贴士", serves:"份量", print:"打印", home:"返回美食推荐", badRecipe:"这个食谱链接似乎已损坏或不完整。", dietLabel:"有过敏或特殊饮食吗？", dietPh:"纯素、乳糜泻、奶酪过敏...", dietNote:"AI 可能会出错。尤其是过敏时，请务必查看标签和成分。", mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
+  en:{ mChef:"Chef", hr:"h", save:"♡ Save", savedOn:"♥ Saved", savedShort:"Saved", savedTitle:"Saved recipes", savedEmpty:"Nothing saved yet. Tap Save on a dish you like.", remove:"Remove", back:"Back", saveFail:"Couldn't save: ", savedLimit:"You've reached the limit of 100 saved recipes. Remove one first.", fullRecipe:"Full recipe", ingr:"Ingredients", stepsH:"Steps", tipsH:"Tips", serves:"Serves", print:"Print", home:"Back to Food Finder", badRecipe:"This recipe link looks broken or incomplete.", dietLabel:"Allergies or special diet?", dietPh:"vegan, celiac, allergic to cheese...", dietNote:"The AI can make mistakes. Always check labels and ingredients, especially for allergies.", mKid:"Kids", mMom:"Moms", modeAria:"Choose version", google:"Continue with Google", apple:"Continue with Apple", or:"or", oauthErr:"Sign-in didn't work: " },
+  he:{ mChef:"שף", hr:"שע׳", save:"♡ שמירה", savedOn:"♥ נשמר", savedShort:"שמורים", savedTitle:"מתכונים שמורים", savedEmpty:"עוד לא שמרתם כלום. לחצו על שמירה ליד מנה שאהבתם.", remove:"הסרה", back:"חזרה", saveFail:"השמירה נכשלה: ", savedLimit:"הגעתם למגבלה של 100 מתכונים שמורים. הסירו אחד קודם.", fullRecipe:"המתכון המלא", ingr:"מצרכים", stepsH:"שלבים", tipsH:"טיפים", serves:"מספר מנות", print:"הדפסה", home:"חזרה למוצא האוכל", badRecipe:"קישור המתכון נראה שבור או חלקי.", dietLabel:"אלרגיות או תזונה מיוחדת?", dietPh:"טבעוני, צליאק, אלרגיה לגבינה...", dietNote:"ה-AI יכול לטעות. תמיד בדקו תוויות ורכיבים, במיוחד באלרגיות.", mKid:"ילדים", mMom:"אמהות", modeAria:"בחירת גרסה", google:"המשך עם Google", apple:"המשך עם Apple", or:"או", oauthErr:"ההתחברות לא הצליחה: " },
+  de:{ mChef:"Profi", hr:"Std.", save:"♡ Speichern", savedOn:"♥ Gespeichert", savedShort:"Gespeichert", savedTitle:"Gespeicherte Rezepte", savedEmpty:"Noch nichts gespeichert. Tippe bei einem Gericht, das dir gefällt, auf Speichern.", remove:"Entfernen", back:"Zurück", saveFail:"Speichern fehlgeschlagen: ", savedLimit:"Du hast das Limit von 100 gespeicherten Rezepten erreicht. Entferne zuerst eines.", fullRecipe:"Ganzes Rezept", ingr:"Zutaten", stepsH:"Schritte", tipsH:"Tipps", serves:"Portionen", print:"Drucken", home:"Zurück zum Essens-Finder", badRecipe:"Dieser Rezeptlink scheint defekt oder unvollständig zu sein.", dietLabel:"Allergien oder besondere Ernährung?", dietPh:"vegan, Zöliakie, Käseallergie...", dietNote:"Die KI kann Fehler machen. Prüfe immer Etiketten und Zutaten, besonders bei Allergien.", mKid:"Kinder", mMom:"Mamas", modeAria:"Version wählen", google:"Weiter mit Google", apple:"Weiter mit Apple", or:"oder", oauthErr:"Anmeldung fehlgeschlagen: " },
+  es:{ mChef:"Chef", hr:"h", save:"♡ Guardar", savedOn:"♥ Guardado", savedShort:"Guardadas", savedTitle:"Recetas guardadas", savedEmpty:"Aún no has guardado nada. Toca Guardar en un plato que te guste.", remove:"Quitar", back:"Volver", saveFail:"No se pudo guardar: ", savedLimit:"Has llegado al límite de 100 recetas guardadas. Quita una primero.", fullRecipe:"Receta completa", ingr:"Ingredientes", stepsH:"Pasos", tipsH:"Consejos", serves:"Raciones", print:"Imprimir", home:"Volver al buscador de comida", badRecipe:"Este enlace de receta parece roto o incompleto.", dietLabel:"¿Alergias o dieta especial?", dietPh:"vegano, celíaco, alergia al queso...", dietNote:"La IA puede equivocarse. Revisa siempre etiquetas e ingredientes, sobre todo con alergias.", mKid:"Niños", mMom:"Mamás", modeAria:"Elegir versión", google:"Continuar con Google", apple:"Continuar con Apple", or:"o", oauthErr:"No se pudo iniciar sesión: " },
+  ja:{ mChef:"シェフ", hr:"時間", save:"♡ 保存", savedOn:"♥ 保存済み", savedShort:"保存", savedTitle:"保存したレシピ", savedEmpty:"まだ何も保存されていません。気に入った料理の「保存」をタップしてね。", remove:"削除", back:"戻る", saveFail:"保存できませんでした：", savedLimit:"保存できるのは100件までです。先にどれか削除してください。", fullRecipe:"レシピ全文", ingr:"材料", stepsH:"手順", tipsH:"コツ", serves:"人数", print:"印刷", home:"フードファインダーに戻る", badRecipe:"このレシピのリンクは壊れているか不完全なようです。", dietLabel:"アレルギーや食事制限は？", dietPh:"ヴィーガン、セリアック、チーズアレルギー…", dietNote:"AIは間違えることがあります。特にアレルギーのときは、必ずラベルと原材料を確認してください。", mKid:"キッズ", mMom:"ママ", modeAria:"バージョンを選ぶ", google:"Googleで続ける", apple:"Appleで続ける", or:"または", oauthErr:"ログインできませんでした：" },
+  zh:{ mChef:"大厨", hr:"小时", save:"♡ 收藏", savedOn:"♥ 已收藏", savedShort:"收藏夹", savedTitle:"已收藏的食谱", savedEmpty:"还没有收藏。点你喜欢的菜上的“收藏”。", remove:"移除", back:"返回", saveFail:"收藏失败：", savedLimit:"已达到100个收藏上限，请先移除一个。", fullRecipe:"完整食谱", ingr:"食材", stepsH:"步骤", tipsH:"小贴士", serves:"份量", print:"打印", home:"返回美食推荐", badRecipe:"这个食谱链接似乎已损坏或不完整。", dietLabel:"有过敏或特殊饮食吗？", dietPh:"纯素、乳糜泻、奶酪过敏...", dietNote:"AI 可能会出错。尤其是过敏时，请务必查看标签和成分。", mKid:"儿童", mMom:"妈妈", modeAria:"选择版本", google:"使用 Google 继续", apple:"使用 Apple 继续", or:"或", oauthErr:"登录失败：" }
 };
 for (const k in EXTRA) Object.assign(LANGS[k], EXTRA[k]);
 
@@ -529,6 +601,51 @@ const DIET = [
   { n:{ en:"Halal", he:"חלאל", de:"Halal", es:"Halal", ja:"ハラール", zh:"清真" } }
 ];
 
+// CHEF version: serious, no-shortcuts wording
+const CHEF = {
+  en:{ title:"The Real Thing", sub:"No shortcuts, no compromises. Tell me what you crave and I'll show you dishes done properly, with real technique.",
+    label:"What are you craving?", ph:"ramen, risotto, croissant...", chips:"Tap to add:", go:"Show me the real thing",
+    loading:"Heating the pans...", easy:"The method", love:"Chef's secret", min:"min",
+    empty:"Type or tap something you're craving.", err:"Something went wrong: ", retry:"Please try again in a moment.",
+    rate:"Easy, chef. Try again in a moment.", signin:"Sign in", signup:"Create account", signout:"Sign out", banned:"This account has been suspended." },
+  he:{ title:"הדבר האמיתי", sub:"בלי קיצורי דרך ובלי פשרות. ספרו לי מה בא לכם ואראה לכם מנות שעושים כמו שצריך, עם טכניקה אמיתית.",
+    label:"מה בא לכם לאכול?", ph:"ראמן, ריזוטו, קרואסון...", chips:"לחצו כדי להוסיף:", go:"תראו לי את האמיתי",
+    loading:"מחמם את המחבתות...", easy:"השיטה", love:"הסוד של השף", min:"דק׳",
+    empty:"כתבו או בחרו משהו שבא לכם.", err:"משהו השתבש: ", retry:"נסו שוב בעוד רגע.",
+    rate:"לאט לאט, שף. נסו שוב בעוד רגע.", signin:"כניסה", signup:"הרשמה", signout:"יציאה", banned:"החשבון הזה הושעה." },
+  de:{ title:"Das Echte", sub:"Keine Abkürzungen, keine Kompromisse. Sag mir, worauf du Lust hast, und ich zeige dir Gerichte, die richtig gemacht werden, mit echter Technik.",
+    label:"Worauf hast du Lust?", ph:"Ramen, Risotto, Croissant...", chips:"Tippe zum Hinzufügen:", go:"Zeig mir das Echte",
+    loading:"Die Pfannen werden heiß...", easy:"Die Methode", love:"Geheimnis des Kochs", min:"Min.",
+    empty:"Schreib oder tippe, worauf du Lust hast.", err:"Etwas ist schiefgelaufen: ", retry:"Versuch es gleich nochmal.",
+    rate:"Langsam, Chef. Versuch es gleich nochmal.", signin:"Anmelden", signup:"Registrieren", signout:"Abmelden", banned:"Dieses Konto wurde gesperrt." },
+  es:{ title:"Lo auténtico", sub:"Sin atajos y sin concesiones. Dime qué se te antoja y te mostraré platos hechos como se debe, con técnica de verdad.",
+    label:"¿Qué se te antoja?", ph:"ramen, risotto, croissant...", chips:"Toca para añadir:", go:"Muéstrame lo auténtico",
+    loading:"Calentando las sartenes...", easy:"El método", love:"El secreto del chef", min:"min",
+    empty:"Escribe o toca lo que se te antoje.", err:"Algo salió mal: ", retry:"Inténtalo de nuevo en un momento.",
+    rate:"Despacio, chef. Inténtalo de nuevo en un momento.", signin:"Entrar", signup:"Registrarse", signout:"Salir", banned:"Esta cuenta ha sido suspendida." },
+  ja:{ title:"本物のレシピ", sub:"近道も妥協もなし。食べたいものを教えてください。本格的な技術で作る料理をご紹介します。",
+    label:"何が食べたいですか？", ph:"ラーメン、リゾット、クロワッサン…", chips:"タップして追加：", go:"本物を見せて",
+    loading:"フライパンを温め中…", easy:"作り方のポイント", love:"シェフの秘密", min:"分",
+    empty:"食べたいものを入力するか、タップしてください。", err:"うまくいきませんでした：", retry:"少ししてからもう一度お試しください。",
+    rate:"ゆっくりどうぞ。少ししてからもう一度。", signin:"ログイン", signup:"新規登録", signout:"ログアウト", banned:"このアカウントは停止されています。" },
+  zh:{ title:"正宗做法", sub:"没有捷径，不打折扣。告诉我你想吃什么，我给你地道的做法和真正的技法。",
+    label:"你想吃什么？", ph:"拉面、烩饭、可颂...", chips:"点一点就能添加：", go:"给我看正宗的",
+    loading:"正在预热锅具...", easy:"做法要点", love:"大厨的秘诀", min:"分钟",
+    empty:"请输入或点选你想吃的东西。", err:"出错了：", retry:"请稍后再试。",
+    rate:"慢一点，大厨。请稍后再试。", signin:"登录", signup:"注册", signout:"退出登录", banned:"此账户已被停用。" }
+};
+
+const CHIPS_CHEF = [
+  { e:"🍜", n:{ en:"Ramen", he:"ראמן", de:"Ramen", es:"Ramen", ja:"ラーメン", zh:"拉面" } },
+  { e:"🍚", n:{ en:"Risotto", he:"ריזוטו", de:"Risotto", es:"Risotto", ja:"リゾット", zh:"意式烩饭" } },
+  { e:"🥐", n:{ en:"Croissant", he:"קרואסון", de:"Croissant", es:"Croissant", ja:"クロワッサン", zh:"可颂" } },
+  { e:"🥘", n:{ en:"Paella", he:"פאייה", de:"Paella", es:"Paella", ja:"パエリア", zh:"西班牙海鲜饭" } },
+  { e:"🍛", n:{ en:"Curry", he:"קארי", de:"Curry", es:"Curry", ja:"カレー", zh:"咖喱" } },
+  { e:"🍳", n:{ en:"Shakshuka", he:"שקשוקה", de:"Shakshuka", es:"Shakshuka", ja:"シャクシューカ", zh:"沙克舒卡" } },
+  { e:"🍞", n:{ en:"Sourdough", he:"לחם מחמצת", de:"Sauerteigbrot", es:"Pan de masa madre", ja:"サワードウ", zh:"酸面包" } },
+  { e:"🍮", n:{ en:"Tiramisu", he:"טירמיסו", de:"Tiramisu", es:"Tiramisú", ja:"ティラミス", zh:"提拉米苏" } }
+];
+
 const CHIPS_MOM = [
   { e:"🍕", n:{ en:"Pizza", he:"פיצה", de:"Pizza", es:"Pizza", ja:"ピザ", zh:"披萨" } },
   { e:"🍗", n:{ en:"Chicken nuggets", he:"נאגטס", de:"Chicken Nuggets", es:"Nuggets de pollo", ja:"チキンナゲット", zh:"鸡块" } },
@@ -556,13 +673,14 @@ let lang = localStorage.getItem("ff_lang") || "en";
 if (!LANGS[lang]) lang = "en";
 let isAdmin = false;
 let currentUserId = null, currentEmail = null;
-let mode = document.documentElement.dataset.mode === "mom" ? "mom" : "kid";
+const MODES = ["kid", "mom", "chef"];
+let mode = MODES.includes(document.documentElement.dataset.mode) ? document.documentElement.dataset.mode : "kid";
 let effort = localStorage.getItem("ff_effort");
 if (!["e10", "e20", "e40"].includes(effort)) effort = "e20";
 const RECIPE_TOKEN = new URLSearchParams(location.search).get("recipe");
 let recipeData = null;
 let reqSeq = 0; // bumps whenever the mode changes, so a late answer from the other mode is dropped
-function S() { return Object.assign({}, LANGS[lang], mode === "mom" ? MOM[lang] : null); }
+function S() { return Object.assign({}, LANGS[lang], mode === "mom" ? MOM[lang] : mode === "chef" ? CHEF[lang] : null); }
 const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 // Always build DOM with textContent: foods typed by users are untrusted.
@@ -579,7 +697,8 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 function drawDecor() {
   const kid = ["🍕","🍓","🍪","🌮","🍩","🥨","🍉","🍔","🧁","🍟","🥑","🍦"];
   const mom = ["🌿","🍋","🍅","🥕","🧄","🌽","🍞","🫒","🌿","🍋","🥕","🍅"];
-  const items = mode === "mom" ? mom : kid;
+  const chef = ["🍋","🌶️","🧄","🥖","🍷","🌿","🧅","🥩","🍅","🧀","🫒","🍄"];
+  const items = mode === "mom" ? mom : mode === "chef" ? chef : kid;
   const spots = [[4,8],[88,6],[10,34],[92,30],[3,58],[90,55],[8,82],[86,84],[48,3],[50,94],[24,70],[72,18]];
   const box = $("decor");
   box.replaceChildren();
@@ -636,15 +755,17 @@ function applyLang() {
   $("modeMom").textContent = "💛 " + L.mMom;
   $("modeKid").setAttribute("aria-pressed", String(mode === "kid"));
   $("modeMom").setAttribute("aria-pressed", String(mode === "mom"));
+  $("modeChef").textContent = "🔥 " + L.mChef;
+  $("modeChef").setAttribute("aria-pressed", String(mode === "chef"));
   $("modebar").setAttribute("aria-label", L.modeAria);
   $("t-google").textContent = L.google;
   $("t-apple").textContent = L.apple;
   $("t-or").textContent = L.or;
   $("effortBox").hidden = mode !== "mom";
   $("t-effort").textContent = L.effortLabel || "";
-  $("mascotFace").textContent = mode === "mom" ? "💛" : "🧑‍🍳";
-  $("zzz").textContent = mode === "mom" ? "🌙" : "😴";
-  $("logoEmoji").textContent = mode === "mom" ? "🍲" : "🍕";
+  $("mascotFace").textContent = mode === "mom" ? "💛" : mode === "chef" ? "🥘" : "🧑‍🍳";
+  $("zzz").textContent = mode === "kid" ? "😴" : "🌙";
+  $("logoEmoji").textContent = mode === "mom" ? "🍲" : mode === "chef" ? "🔥" : "🍕";
   $("t-diet").textContent = L.dietLabel;
   $("diet").placeholder = L.dietPh;
   $("t-dietnote").textContent = L.dietNote;
@@ -654,7 +775,7 @@ function applyLang() {
 
   const chips = $("chips");
   chips.replaceChildren();
-  (mode === "mom" ? CHIPS_MOM : CHIPS).forEach(c => {
+  (mode === "mom" ? CHIPS_MOM : mode === "chef" ? CHIPS_CHEF : CHIPS).forEach(c => {
     const name = c.n[lang];
     const b = el("button", "chip", c.e + " " + name);
     b.type = "button";
@@ -699,7 +820,7 @@ function paintEffort() {
   });
 }
 function paintWho() {
-  $("who").textContent = currentEmail ? (mode === "mom" ? "💛 " : "😎 ") + currentEmail : "";
+  $("who").textContent = currentEmail ? (mode === "mom" ? "💛 " : mode === "chef" ? "🔥 " : "😎 ") + currentEmail : "";
 }
 function setMode(m) {
   if (m === mode) return;
@@ -711,13 +832,14 @@ function setMode(m) {
 }
 function applyMode() {
   document.documentElement.dataset.mode = mode;
-  $("themeColor").setAttribute("content", mode === "mom" ? "#fbf4ec" : "#4a2bd4");
+  $("themeColor").setAttribute("content", mode === "mom" ? "#fbf4ec" : mode === "chef" ? "#12100e" : "#4a2bd4");
   if (!RECIPE_TOKEN) { try { localStorage.setItem("ff_mode", mode); } catch (e) {} }
   drawDecor();
   applyLang();
 }
 $("modeKid").addEventListener("click", () => setMode("kid"));
 $("modeMom").addEventListener("click", () => setMode("mom"));
+$("modeChef").addEventListener("click", () => setMode("chef"));
 function tick() {
   const L = S();
   $("clock").textContent = "🕒 " + L.now + ": " +
@@ -910,6 +1032,10 @@ function guessCurrency() {
   } catch (e) {}
   return "USD";
 }
+function fmtMins(m, L) {
+  m = Math.round(m);
+  return m >= 120 ? (Math.round(m / 6) / 10) + " " + (L.hr || "h") : m + " " + (L.min || "min");
+}
 const pageBase = () => location.href.split(/[?#]/)[0];
 function b64u(bytes) {
   let t = ""; bytes.forEach(b => { t += String.fromCharCode(b); });
@@ -938,7 +1064,7 @@ async function unpackRecipe(tok) {
 function cleanLoaded(p) {
   if (!p || typeof p !== "object" || !p.r || !Array.isArray(p.r.ingredients) || !Array.isArray(p.r.steps)) return null;
   const str = (x, n) => String(x == null ? "" : x).slice(0, n);
-  return { n: str(p.n, 120), e: firstEmoji(p.e), l: LANGS[p.l] ? p.l : "en", m: p.m === "mom" ? "mom" : "kid",
+  return { n: str(p.n, 120), e: firstEmoji(p.e), l: LANGS[p.l] ? p.l : "en", m: MODES.includes(p.m) ? p.m : "kid",
     r: { servings: Number(p.r.servings) || 0, total_minutes: Number(p.r.total_minutes) || 0,
          ingredients: p.r.ingredients.slice(0, 30).map(x => str(x, 200)),
          steps: p.r.steps.slice(0, 30).map(x => str(x, 600)), tips: str(p.r.tips, 500) } };
@@ -953,7 +1079,7 @@ function renderRecipe() {
     card.append(el("span", "recipe-emoji", d.e), el("h2", null, d.n));
     const meta = el("p", "recipe-meta");
     if (d.r.servings) meta.append(el("span", "meta", "🍽 " + L.serves + ": " + d.r.servings), document.createTextNode(" "));
-    if (d.r.total_minutes) meta.append(el("span", "meta", "⏱ " + d.r.total_minutes + " " + (L.min || "min")));
+    if (d.r.total_minutes) meta.append(el("span", "meta", "⏱ " + fmtMins(d.r.total_minutes, L)));
     card.append(meta);
     card.append(el("h3", null, "🛒 " + L.ingr));
     const ul = el("ul"); d.r.ingredients.forEach(x => ul.append(el("li", null, x))); card.append(ul);
@@ -973,8 +1099,8 @@ function renderRecipe() {
 /* ---------- results: the bento lunchbox ---------- */
 function confetti() {
   if (reduceMotion) return;
-  const set = mode === "mom" ? ["💛","🌿","✨","🍋"] : ["🎉","⭐","🍕","🍓","🍪","✨","🥨","🍉"];
-  for (let i = 0; i < (mode === "mom" ? 12 : 22); i++) {
+  const set = mode === "mom" ? ["💛","🌿","✨","🍋"] : mode === "chef" ? ["🔥","✨","🍋","🌿"] : ["🎉","⭐","🍕","🍓","🍪","✨","🥨","🍉"];
+  for (let i = 0; i < (mode === "kid" ? 22 : 12); i++) {
     const s = el("span", "confetti", set[i % set.length]);
     s.style.left = (Math.random() * 100) + "vw";
     s.style.fontSize = (18 + Math.random() * 16) + "px";
@@ -998,10 +1124,10 @@ function suggestionBox(s, m, lg) {
   box.append(el("span", "big-emoji", firstEmoji(s.emoji)));
   box.append(el("h3", null, s.name || ""));
   const mins = Number(s.time_minutes);
-  if (mins > 0 && mins < 600) box.append(el("span", "meta", "⏱ " + Math.round(mins) + " " + (L.min || "min")));
+  if (mins > 0 && mins < 1500) box.append(el("span", "meta", "⏱ " + fmtMins(mins, L)));
   box.append(el("p", null, s.why_similar || ""));
   const how = el("p", "how");
-  how.append(el("b", null, (mode === "mom" ? "🍳 " : "👩‍🍳 ") + L.easy), document.createTextNode(s.how_to_get || ""));
+  how.append(el("b", null, (mode === "mom" ? "🍳 " : mode === "chef" ? "🔪 " : "👩‍🍳 ") + L.easy), document.createTextNode(s.how_to_get || ""));
   box.append(how);
   if (s.full_recipe && Array.isArray(s.full_recipe.steps) && s.full_recipe.steps.length) {
     const a = el("a", "recipe-link", "📖 " + (L.fullRecipe || "Full recipe"));
@@ -1012,7 +1138,7 @@ function suggestionBox(s, m, lg) {
   }
   if (s.love_touch) {
     const love = el("p", "love");
-    love.append(el("b", null, "💌 " + (L.love || "")), document.createTextNode(s.love_touch));
+    love.append(el("b", null, (mode === "chef" ? "🤫 " : "💌 ") + (L.love || "")), document.createTextNode(s.love_touch));
     box.append(love);
   }
   return box;
@@ -1079,7 +1205,7 @@ function renderResult(out, parsed) {
   const L = S();
   out.replaceChildren();
   if (parsed.greeting) out.append(el("div", "bubble says", parsed.greeting));
-  if (parsed.common_thread) out.append(el("div", "bubble says", (mode === "mom" ? "💛 " : "🔎 ") + parsed.common_thread));
+  if (parsed.common_thread) out.append(el("div", "bubble says", (mode === "mom" ? "💛 " : mode === "chef" ? "🔥 " : "🔎 ") + parsed.common_thread));
 
   const tray = el("div", "tray");
   (parsed.suggestions || []).forEach(sg => {
@@ -1203,7 +1329,7 @@ async function loadRequests(body) {
     rows.forEach(r => {
       const tr = document.createElement("tr");
       tr.append(el("td", null, fmt(r.created_at)));
-      tr.append(el("td", null, r.mode === "mom" ? "💛 mom" : "🧒 kid"));
+      tr.append(el("td", null, r.mode === "mom" ? "💛 mom" : r.mode === "chef" ? "🔥 chef" : "🧒 kid"));
       tr.append(el("td", null, r.email));
       const ft = el("td", null, r.foods);
       if (r.diet) ft.append(el("br"), el("span", "badge", "diet: " + r.diet));
